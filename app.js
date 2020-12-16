@@ -8,11 +8,20 @@ app.use(express.static("public"));
 var bodyParser = require('body-parser');
 app.use(express.urlencoded({extended:true}));
 app.use(express.json())
+//token
+var jwt = require('jsonwebtoken');
 
+const {ErrorHandler,handleError } = require('./helpers/error')
+const {successHandle,success} = require('./helpers/success')
 
 let usersRouter = require('./routers/users.router');
 
 app.use('/users',usersRouter)
+
+
+app.use((err, req, res, next) => {
+    handleError(err, res);
+  });
 
 
 server.listen(4000, function () {
