@@ -8,12 +8,13 @@ class ErrorHandler extends Error {
     }
   }
   const handleError = (err, res) => {
+   console.log(err);
     let object = {
       status:"error",
       code:err.code,
-      message:err.message
+      message:err.sqlMessage,
     }
-    res.send(object )
+    res.send(object)
   };
 
   module.exports = {

@@ -1,18 +1,44 @@
-class successHandle{
-    constructor(username,password) {
-        this.username = username;
-        this.password = password;    
-    }  
-}  
+class successResponse {
+    constructor(data, message) {
+        this.status = "success"
+        this.data = data;
+        this.message = message ? message : null;
+    }
 
-let handleData = (data,sumPage,res) =>{
-    res.send({status:"success",sumPage,data})
-
+    handleSuccessRes = () => {
+        let successRes = {
+            status:this.status,
+            message: this.message,
+            data: this.data,
+           
+        }
+        return successRes
+    }
 }
 
-let handleSuccess = (data,res) =>{
-    res.send({status:"success",data})
+class pagination extends successResponse {
+    constructor(data, page, limit, total, message,) {
+        super(data, message)
+        this.page = page,
+            this.limit = limit,
+            this.total = total
+    }
+    successPagination = () => {
+        let successPage = {
+            page: this.page,
+            limit: this.limit,
+            total: this.total,
+        }
+        return [
+            this.handleSuccessRes()
+            , successPage]
+    }
 }
 
 
-module.exports ={successHandle,handleData,handleSuccess}
+let handleSuccess = (data, res) => {
+    res.send({ status: "success", data })
+}
+
+
+module.exports = { successResponse, pagination, handleSuccess }

@@ -1,22 +1,27 @@
 
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 const server = require('http').Server(app);
+const cookieParser = require('cookie-parser')
 require('dotenv').config()
+app.use(cookieParser())
 app.use(express.static("public"));
 //Body parser
 var bodyParser = require('body-parser');
 app.use(express.urlencoded({extended:true}));
 app.use(express.json())
+
+
+ 
+
 //token
-var jwt = require('jsonwebtoken');
 
-const {ErrorHandler,handleError } = require('./helpers/error')
-const {successHandle,success} = require('./helpers/success')
 
-let usersRouter = require('./routers/users.router');
+const usersRouter = require('./routers/users.router');
+const loginRouter = require('./routers/login.router')
 
 app.use('/users',usersRouter)
+app.use('/login',loginRouter)
 
 
 app.use((err, req, res, next) => {
