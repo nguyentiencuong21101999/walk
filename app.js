@@ -10,19 +10,15 @@ app.use(express.static("public"));
 var bodyParser = require('body-parser');
 app.use(express.urlencoded({extended:true}));
 app.use(express.json())
-
-
  
-
-//token
-
+const {ErrorHandler,handleError} =  require('./helpers/error')
 
 const usersRouter = require('./routers/users.router');
 const loginRouter = require('./routers/login.router')
-
+const roleRouter = require('./routers/role.router')
 app.use('/users',usersRouter)
 app.use('/login',loginRouter)
-
+app.use('/role',roleRouter)
 
 app.use((err, req, res, next) => {
     handleError(err, res);
