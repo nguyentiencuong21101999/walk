@@ -10,15 +10,18 @@ app.use(express.static("public"));
 var bodyParser = require('body-parser');
 app.use(express.urlencoded({extended:true}));
 app.use(express.json())
- 
-const {ErrorHandler,handleError} =  require('./helpers/error')
 
+
+const {ErrorHandler,handleError} =  require('./helpers/error')
 const usersRouter = require('./routers/users.router');
 const loginRouter = require('./routers/login.router')
-const roleRouter = require('./routers/role.router')
+const roleRouter = require('./routers/role.router');
+
+const generator = require('./helpers/jwt.helper')
 app.use('/users',usersRouter)
 app.use('/login',loginRouter)
 app.use('/role',roleRouter)
+require('./helpers/init_redis')
 
 app.use((err, req, res, next) => {
     handleError(err, res);

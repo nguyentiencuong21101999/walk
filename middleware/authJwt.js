@@ -1,4 +1,5 @@
 var jwt = require('jsonwebtoken');
+const generator = require('../helpers/jwt.helper')
 
 verifyToken = (req, res, next) => {
     if (!req.headers.cookie) {
@@ -16,9 +17,13 @@ verifyToken = (req, res, next) => {
 }
 
 isAdmin=(req,res,next) =>{
-    const roleAdmin = req.data.strToken.role 
-    console.log(roleAdmin);
-    if(roleAdmin === 2){
+   
+    console.log(req.body);
+    const {token} = req.body;
+    const decoded = generator.decodedToken(token,process.env.TOKEN_SECRET)
+    console.log(decoded);
+ 
+    if(decoded.strToken.role === 2 ){
         next()
     }else{
         return res.status(403).send({
@@ -27,8 +32,12 @@ isAdmin=(req,res,next) =>{
     }
 }
 isModerator = (req,res,next) =>{
-    const roleModerator = req.data.strToken.role 
-    if(roleModerator === 3 ){
+    console.log(req.body);
+    const {token} = req.body;
+    const decoded = generator.decodedToken(token,process.env.TOKEN_SECRET)
+    console.log(decoded);
+ 
+    if(decoded.strToken.role === 3 ){
         next()
     }else{
         return res.status(403).send({

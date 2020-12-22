@@ -1,12 +1,28 @@
 
-
-module.exports.admin = (req,res,next) =>{
+module.exports.admin = (req, res, next) => {
     console.log(req.data);
-    res.send("admin")
+
+    const data = req.data;
+    if (data) {
+        try {
+            res.json({
+                token: data.token
+                , refreshToken: data.refreshToken
+            })
+        }catch{ err => res.json({err})}
+    }
 }
-module.exports.member =(req,res,next) =>{
+module.exports.member = (req, res, next) => {
     res.send("member")
 }
-module.exports.moderator = (req,res,next)=>{
-    res.send("moderator")
+module.exports.moderator = (req, res, next) => {
+    const data = req.data;
+    if (data) {
+        try {
+            res.json({
+                token: data.token
+                , refreshToken: data.refreshToken
+            })
+        }catch{ err => res.json({err})}
+    }
 }

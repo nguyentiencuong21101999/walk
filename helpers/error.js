@@ -1,5 +1,5 @@
 class ErrorHandler extends Error {
-    
+  
     constructor(code, message) {
         super();
       this.status = "error";
@@ -8,7 +8,6 @@ class ErrorHandler extends Error {
     }
   }
   const handleError = (err, res) => {
-   console.log(err);
     let object = {
       status:"error",
       code:err.code,

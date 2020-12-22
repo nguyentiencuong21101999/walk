@@ -25,7 +25,7 @@ const ErrorRequest = [
     }
 ]
 const ErrSQL = [
-    ER_EMPTY_QUERY{
+    ER_EMPTY_QUERY={
         status: "error",
         code: "ER_EMPTY_QUERY",
         message: "Query was empty"
