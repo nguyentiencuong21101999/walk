@@ -10,23 +10,21 @@ app.use(express.static("public"));
 var bodyParser = require('body-parser');
 app.use(express.urlencoded({extended:true}));
 app.use(express.json())
-
-
-const {ErrorHandler,handleError} =  require('./helpers/error')
+require('./helpers/redis/init_redis')
+const {ErrorHandler,handleError} =  require('./helpers/handleResponse/errorHandle')
 const usersRouter = require('./routers/users.router');
 const loginRouter = require('./routers/login.router')
 const roleRouter = require('./routers/role.router');
 
-const generator = require('./helpers/jwt.helper')
+// const generator = require('./helpers/jwt.helper')
 app.use('/users',usersRouter)
 app.use('/login',loginRouter)
 app.use('/role',roleRouter)
-require('./helpers/init_redis')
+
 
 app.use((err, req, res, next) => {
     handleError(err, res);
   });
-
 
 server.listen(4000, function () {
     console.log('Example app listening on port 4000!');

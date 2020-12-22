@@ -13,7 +13,15 @@ module.exports.admin = (req, res, next) => {
     }
 }
 module.exports.member = (req, res, next) => {
-    res.send("member")
+    const data = req.data;
+    if (data) {
+        try {
+            res.json({
+                token: data.token
+                , refreshToken: data.refreshToken
+            })
+        }catch{ err => res.json({err})}
+    }
 }
 module.exports.moderator = (req, res, next) => {
     const data = req.data;

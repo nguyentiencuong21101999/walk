@@ -1,8 +1,8 @@
 const query = require('../query');
 const method = require('../DAO');
 const jwt = require('jsonwebtoken');
-const client = require('../helpers/init_redis');
-const generator = require('../helpers/jwt.helper')
+const client = require('../helpers/redis/init_redis');
+const generator = require('../helpers/generatorToken/generatorToken')
 require = ('../helpers/init_redis.js')
 
 

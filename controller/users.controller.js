@@ -1,6 +1,6 @@
 let query = require('../query');
 let method = require('../DAO');
-const { successResponse, pagination, handleSuccess } = require('../helpers/success');
+const { successResponse, pagination, handleSuccess } = require('../helpers/handleResponse/successHandle');
 
 module.exports.get_user = (req,res) =>{
     query(
