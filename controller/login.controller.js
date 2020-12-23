@@ -24,9 +24,23 @@ module.exports.login = (req, res, next) => {
                     data.map((value, key) => {
                         strToken = value
                     })
+                    
                     const token = generator.generatorToken(strToken, process.env.TOKEN_SECRET, process.env.TOKEN_LIFE);
                     const refreshToken = generator.generatorToken(strToken, process.env.REFRESH_TOKEN_SECRET, process.env.REFRESH_TOKEN_LIFE);
-
+                    
+                    let account =[{
+                        account1: [
+                            {
+                                user: {
+                               accesstoken:token,
+                               refreshtoken:refreshToken
+                                }
+                            }
+                          ]
+                    }] 
+                      
+                    // client.set("account",)
+              
                     //push redis
                     client.set("refreshToken", refreshToken);
 
@@ -47,9 +61,14 @@ module.exports.refreshToken = (req, res, next) => {
         // console.log(reply)
         if (refreshToken && refreshToken === reply) {
             const decoded = generator.decodedToken(reply,process.env.REFRESH_TOKEN_SECRET);
-            const token = generator.generatorToken(decoded.strToken,process.env.TOKEN_SECRET,process.env.TOKEN_LIFE );
+            const newToken = generator.generatorToken(decoded.strToken,process.env.TOKEN_SECRET,process.env.TOKEN_LIFE );
+            const newRefreshToken = generator.generatorToken(decoded.strToken,process.env.REFRESH_TOKEN_SECRET,process.env.REFRESH_TOKEN_LIFE );
+            //addrefresh
+            client.set("refreshToken",newRefreshToken)
             res.json({
-                accessToken: token
+                newToken: newToken,
+                newRefreshToken:newRefreshToken
+
             })
         } else {
             res.send("err")
