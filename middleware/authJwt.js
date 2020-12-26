@@ -1,49 +1,30 @@
-var jwt = require('jsonwebtoken');
+
 const generator = require('../helpers/generatorToken/generatorToken')
+const { ErrorHandler, handleError } = require('../helpers/handleResponse/errorHandle')
 
-verifyToken = (req, res, next) => {
-    if (!req.headers.cookie) {
-        // console.log(token[1]);
-        return res.status(403).send({
-            message: "No token provided!"
-        });
-    }
-    else{
-        let token = req.headers.cookie.split("auth=")
-        const decode = jwt.verify(token[1],process.env.TOKEN_SECRET)   
-        req.data = (decode)
+isAdmin = (req, res, next) => {
+
+    const { token } = req.body;
+    const decoded = generator.decodedToken(token, process.env.TOKEN_SECRET)
+    if (decoded.strToken.role === 2) {
         next()
+    } else {
+        res.send(new ErrorHandler(403, 'Require Admin Role!'))
     }
 }
-
-isAdmin=(req,res,next) =>{
-   
-    const {token} = req.body;
-    const decoded = generator.decodedToken(token,process.env.TOKEN_SECRET)
-    if(decoded.strToken.role === 2 ){
+isModerator = (req, res, next) => {
+    const { token } = req.body;
+    const decoded = generator.decodedToken(token, process.env.TOKEN_SECRET)
+    if (decoded.strToken.role === 3) {
         next()
-    }else{
-        return res.status(403).send({
-            message: "Require Admin Role!"
-          });
-    }
-}
-isModerator = (req,res,next) =>{
-    const {token} = req.body;
-    const decoded = generator.decodedToken(token,process.env.TOKEN_SECRET)
-    if(decoded.strToken.role === 3 ){
-        next()
-    }else{
-        return res.status(403).send({
-            message: "Require Moderator Role!"
-          });
+    } else {
+        res.send(new ErrorHandler(403, "Require Moderator Role!"))
     }
 }
 
 
 const authJwt = {
-    verifyToken: verifyToken,
-    isAdmin:isAdmin,
-    isModerator:isModerator
+    isAdmin: isAdmin,
+    isModerator: isModerator
 }
 module.exports = authJwt;

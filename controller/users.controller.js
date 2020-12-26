@@ -49,12 +49,11 @@ module.exports.users = async (req, res, next) => {
 }
 module.exports.add = (req, res,next) => {
     let user = {
-        id: 3,
+        id: 4,
         username: "moderator",
         password: "moderator",
         role:3
     }
-    let values = [[user.id, user.username, user.password, user.time]];
     query(
         //method.INSERT, [values]
         `CALL insert_users(${user.id},'${user.username}','${user.password}',${user.role} )`
