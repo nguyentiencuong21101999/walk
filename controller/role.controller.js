@@ -1,12 +1,6 @@
 
 module.exports.admin = (req, res, next) => {
-    const info = req.data.info.strToken
-    const token = req.data.token
-    res.json({
-        page: "admin",
-        token:token ,
-        info: info
-    })
+    res.send("this is admin ...")
 }
 module.exports.member = (req, res, next) => {
     console.log(req.data);

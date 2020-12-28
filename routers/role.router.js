@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const AuthMiddleware =  require('../middleware/AuthMiddleware')
-const authJwt = require('../middleware/authJwt')
+const authJwt =  require('../middleware/AuthJwt')
+const authRole = require('../middleware/authRole')
 
 let controller = require('../controller/role.controller');
-router.get('/member',AuthMiddleware.isCheckToken,AuthMiddleware.isAuth,controller.member)
-router.get('/admin',AuthMiddleware.isCheckToken,AuthMiddleware.isAuth,authJwt.isAdmin,controller.admin)
-router.get('/moderator',AuthMiddleware.isCheckToken,AuthMiddleware.isAuth,authJwt.isModerator,controller.moderator)
+router.get('/member',authJwt.verifyToken,controller.member)
+router.get('/admin',authJwt.verifyToken,authRole.isAdmin,controller.admin)
+router.get('/moderator',authJwt.verifyToken,authRole.isModerator,controller.moderator)
 
 module.exports = router;

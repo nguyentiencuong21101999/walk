@@ -5,7 +5,6 @@ const client = redis.createClient({
     host:"127.0.0.1"
 })
 
-
 client.on('connect',() =>{
     console.log('client  connected redis ...');
 })
