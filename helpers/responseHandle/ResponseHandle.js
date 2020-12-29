@@ -5,15 +5,15 @@ class successResponse {
         this.message = message ? message : null;
     }
 
-    handleSuccessRes = () => {
-        let successRes = {
-            status:this.status,
-            message: this.message,
-            data: this.data,
+    // handleSuccessRes = () => {
+    //     let successRes = {
+    //         status:this.status,
+    //         message: this.message,
+    //         data: this.data,
            
-        }
-        return successRes
-    }
+    //     }
+    //     return successRes
+    // }
 }
 
 class pagination extends successResponse {
