@@ -15,8 +15,8 @@ app.use(express.json())
 
 require('./database/connection/db.connection')
 
-const {handleError} = require('./helpers/errorHandle/errorHandle')
-const userRouter = require("./modules/user.router")
+const {handleError} = require('./helpers/error_handle/errorHandle')
+const userRouter = require("./modules/user/user.router")
 app.use('/user', userRouter)
 
 app.use((err, req, res, next) => {
