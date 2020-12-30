@@ -36,13 +36,13 @@ const getStoredToken = (key, userId) => new Promise((resolve, reject) => {
 })
 
 const storeToken = async (token, key) => {
-    console.log(key);
+
     const decodedToken = decodeToken(token)
     const userId = decodedToken && decodedToken.id
 
     if (!userId) res.json(ErrorHandler(403, "token is not valid"))
     const currentTokens = await getStoredToken(key, userId)
-    console.log(currentTokens);
+
     currentTokens.add(token)
     client.hset(key, userId, [...currentTokens].join(','))
 
@@ -58,8 +58,7 @@ const validateToken = (token, key) => new Promise((resolve, reject) => {
     if (!userId) {
         res.json(new ErrorHandler(403, "DecodeTokenFailed"));
     }
-
-    client.hexists(key, userId, async (err, reply) => {
+    const result = client.hexists(key, userId, async (err, reply) => {
         if (reply === 1) {
             const currentToken = await getStoredToken(key, userId)
             return resolve(currentToken.has(token))
@@ -74,10 +73,12 @@ const validateToken = (token, key) => new Promise((resolve, reject) => {
 const verifyRefreshToken = async (req, res, next) => {
     try {
         const { refreshToken } = req.body
-
         //if validateTken  return false <=> khong cos tren redis
-        if (!validateToken(refreshToken, authJwtType.refreshToken.key)) {
+        const isValid = await validateToken(refreshToken, authJwtType.refreshToken.key)
+        
+        if (!isValid) {
             res.json(new ErrorHandler(403, "InvalidRefreshToken"))
+
         } else {
             const decodedToken = jwt.verify(refreshToken, authJwtType.refreshToken.secret)
             if (decodedToken) {
@@ -104,12 +105,12 @@ const revokeToken = async (token, key) => {
     currentTokens.delete(token)
     // console.log(currentTokens.delete(token));
     // console.log([...currentTokens].join(','));
-    console.log([...currentTokens].join(','));
+ 
     client.hset(key, userId, [...currentTokens].join(','))
 
 }
 const checkAccessToken = async (req, res, next) => {
-    console.log(req.body);
+
     try {
         const token = getTokenFromHeader(req)
         const decodedToken = jwt.verify(token, authJwtType.accessToken.secret)
