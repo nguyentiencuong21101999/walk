@@ -11,6 +11,8 @@ router.post('/signin',
 controller.signin
 )
 router.post('/signup',
+
+authJwt.checkAccessToken,
 controller.signup
 )
 router.post('/refreshToken',

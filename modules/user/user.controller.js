@@ -36,6 +36,7 @@ module.exports.signin = (req, res, next) => {
         if (compare === true) {
             const generator = authJwt.generatorToken(user)
             //store refreshToken
+            authJwt.storeToken(generator.token,authJwtType.accessToken.key)
             authJwt.storeToken(generator.refreshToken, authJwtType.refreshToken.key)
             res.json({
                 accessToken: generator.token,
@@ -73,7 +74,8 @@ module.exports.refreshToken = async(req, res) => {
     res.send(data)
 }
 module.exports.signout = async(req,res) =>{
-    const {refreshToken} = req.body;
+    const {refreshToken,token} = req.body;
+    await authJwt.revokeToken(token,authJwtType.accessToken.key)
     await authJwt.revokeToken(refreshToken,authJwtType.refreshToken.key);
     res.json(
         {mesage:"logout success"}

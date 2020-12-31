@@ -75,7 +75,6 @@ const verifyRefreshToken = async (req, res, next) => {
         const { refreshToken } = req.body
         //if validateTken  return false <=> khong cos tren redis
         const isValid = await validateToken(refreshToken, authJwtType.refreshToken.key)
-        
         if (!isValid) {
             res.json(new ErrorHandler(403, "InvalidRefreshToken"))
 
@@ -89,10 +88,11 @@ const verifyRefreshToken = async (req, res, next) => {
                 req.user = user;
                 return next();
             }
+            res.json(new ErrorHandler(403,"DecodeTokenFailed"));
         }
         // validateToken  retunr true <=> co tren redis
 
-        // res.json(new ErrorHandler(403,"DecodeTokenFailed"));
+      
     } catch (err) {
         next(err);
     }
