@@ -11,7 +11,7 @@ module.exports.getUserByEmail = (req, res, next) => {
     const { email } = req.body;
     querySql(model.getUserByEmail(email), (err, data) => {
         if (err) {
-            console.log(err);
+            next(err)
         }
         res.json(new successResponse(data[0]))
     })

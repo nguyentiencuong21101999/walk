@@ -69,6 +69,33 @@ const validateToken = (token, key) => new Promise((resolve, reject) => {
 })
 
 
+const verifyAccessToken = async (req, res, next) => {
+    try {
+        const token = getTokenFromHeader(req)
+        const isValid = await validateToken(token, authJwtType.accessToken.key)
+        if (!token || !isValid) {
+            throw new ErrorHandler(ErrorCode.Unauthorized)
+        }
+
+        await jwt.verify(token, authJwtType.accessToken.secret,(err,decodedToken) =>{
+            if (decodedToken) {
+                const user = {
+                    id: decodedToken.id,
+                    role: decodedToken.role
+                }
+                req.user = user;
+                return next()
+            }else{
+                res.json(new ErrorHandler(403,"Token expire!"))
+            }
+        })
+        
+   
+    } catch (err) {
+        next(err)
+    }
+
+}
 
 const verifyRefreshToken = async (req, res, next) => {
     try {
@@ -88,11 +115,11 @@ const verifyRefreshToken = async (req, res, next) => {
                 req.user = user;
                 return next();
             }
-            res.json(new ErrorHandler(403,"DecodeTokenFailed"));
+            res.json(new ErrorHandler(403, "DecodeTokenFailed"));
         }
         // validateToken  retunr true <=> co tren redis
 
-      
+
     } catch (err) {
         next(err);
     }
@@ -105,7 +132,7 @@ const revokeToken = async (token, key) => {
     currentTokens.delete(token)
     // console.log(currentTokens.delete(token));
     // console.log([...currentTokens].join(','));
- 
+
     client.hset(key, userId, [...currentTokens].join(','))
 
 }
@@ -114,8 +141,11 @@ const checkAccessToken = async (req, res, next) => {
     try {
         const token = getTokenFromHeader(req)
         const decodedToken = jwt.verify(token, authJwtType.accessToken.secret)
-        req.userId = decodedToken.id
-        req.userRole = decodedToken.role
+        const user = {
+            id: decodedToken.id,
+            role: decodedToken.role
+        }
+        req.user = user;
         next()
 
     } catch (err) {
@@ -135,6 +165,7 @@ module.exports = {
     generatorToken,
     storeToken,
     revokeToken,
+    verifyAccessToken,
     verifyRefreshToken,
     checkAccessToken
 }

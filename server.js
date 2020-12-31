@@ -17,7 +17,9 @@ require('./database/connection/db.connection')
 
 const {handleError} = require('./helpers/error_handle/errorHandle')
 const userRouter = require("./modules/user/user.router")
-app.use('/user', userRouter)
+const roleRouter = require("./modules/role/role.router")
+app.use('/user', userRouter);
+app.use('/role',roleRouter);
 
 app.use((err, req, res, next) => {
   handleError(err, res);
