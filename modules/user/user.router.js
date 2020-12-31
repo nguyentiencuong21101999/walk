@@ -1,29 +1,29 @@
 const app = require('express');
 const router = app.Router();
 const authJwt = require('../auth_jwt/authJwt.middleware');
-const authJoi = require('../auth_joi/authJoi.user.middleware')
+const authUser = require('./user.middleware')
 
 const controller = require('../user/user.controller')
 router.post('/',
-authJoi.validateGetUserByEmail
+authUser.validateGetUserByEmail
 ,controller.getUserByEmail
 )
 router.post('/signin',
-authJoi.validateSignin,
+authUser.validateSignin,
 controller.signin
 )
 router.post('/signup',
-authJoi.validateSingup,
+authUser.validateSingup,
 authJwt.checkAccessToken,
 controller.signup
 )
 router.post('/refreshToken',
-authJoi.validateRefreshToken,
+authUser.validateRefreshToken,
 authJwt.verifyRefreshToken,
 controller.refreshToken
 )
 router.post('/signout',
-authJoi.validateSignout,
+authUser.validateSignout,
 authJwt.checkAccessToken,
 controller.signout)
 
