@@ -1,3 +1,5 @@
+
+const joi = require('joi')
 const model = require('./user.model')
 const bcrypt = require('../../helpers/bcrypt/bcrypt')
 const { successResponse } = require('../../helpers/response_handle/response_handle');
@@ -5,44 +7,52 @@ const authJwt = require('../auth_jwt/authJwt.middleware')
 const authJwtType = require('../auth_jwt/authJwt.type')
 const querySql = require('../../database/query/db.query');
 const generator = require('../auth_jwt/authJwt.middleware');
-const { auth } = require('../../helpers/redis/connect_redis');
+const { ErrorHandler, ErrorCodeHandler } = require('../../helpers/error_handle/error_handle')
 
-module.exports.getUserByEmail = (req, res, next) => {
+
+
+module.exports.getUserByEmail = async (req, res, next) => {
     const { email } = req.body;
+
     querySql(model.getUserByEmail(email), (err, data) => {
         if (err) {
             next(err)
         }
         res.json(new successResponse(data[0]))
-    })
-
-
+    }
+    )
 }
 module.exports.signin = (req, res, next) => {
+    console.log(req.body);
     const { email, password } = req.body;
     querySql(model.getUserByEmail(email), async (err, data) => {
         if (err) {
             next(err)
         }
-        let info = {};
-        data[0].map((value, key) => {
-            info = value
-        })
-        const user = {
-            id: info.id,
-            role: info.role
-        }
-        const compare = await bcrypt.comparePassword(password, info.password)
-        if (compare === true) {
-            const generator = authJwt.generatorToken(user)
-            //store refreshToken
-            authJwt.storeToken(generator.token,authJwtType.accessToken.key)
-            authJwt.storeToken(generator.refreshToken, authJwtType.refreshToken.key)
-            res.json({
-                accessToken: generator.token,
-                refreshToken: generator.refreshToken
+        if(data){
+            let info = {};
+            data[0].map((value, key) => {
+                info = value
             })
+            const user = {
+                id: info.id,
+                role: info.role
+            }
+            const compare = await bcrypt.comparePassword(password, info.password)
+            if (compare === true) {
+                const generator = authJwt.generatorToken(user)
+                //store refreshToken
+                authJwt.storeToken(generator.token, authJwtType.accessToken.key)
+                authJwt.storeToken(generator.refreshToken, authJwtType.refreshToken.key)
+                res.json({
+                    accessToken: generator.token,
+                    refreshToken: generator.refreshToken
+                })
+            }else{
+                res.json(new ErrorCodeHandler("email or password is not valid."))
+            }
         }
+        
     })
 
 
@@ -60,7 +70,7 @@ module.exports.signup = async (req, res, next) => {
     })
 }
 
-module.exports.refreshToken = async(req, res) => {
+module.exports.refreshToken = async (req, res) => {
     const { refreshToken } = req.body
     const user = req.user;
     const generators = generator.generatorToken(user);
@@ -73,11 +83,11 @@ module.exports.refreshToken = async(req, res) => {
     // console.log(data);
     res.send(data)
 }
-module.exports.signout = async(req,res) =>{
-    const {refreshToken,token} = req.body;
-    await authJwt.revokeToken(token,authJwtType.accessToken.key)
-    await authJwt.revokeToken(refreshToken,authJwtType.refreshToken.key);
+module.exports.signout = async (req, res) => {
+    const { refreshToken, token } = req.body;
+    await authJwt.revokeToken(token, authJwtType.accessToken.key)
+    await authJwt.revokeToken(refreshToken, authJwtType.refreshToken.key);
     res.json(
-        {mesage:"logout success"}
-        )
+        { mesage: "logout success" }
+    )
 }

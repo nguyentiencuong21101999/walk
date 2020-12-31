@@ -7,6 +7,12 @@ class ErrorHandler extends Error {
       this.message = message;
     }
   }
+  class ErrorCodeHandler{
+    constructor( message) {
+    this.status = "error";
+    this.message = message;
+  }
+  }
   const handleError = (err, res) => {
     let object = {
       status:"error",
@@ -18,5 +24,6 @@ class ErrorHandler extends Error {
 
   module.exports = {
     ErrorHandler,
+    ErrorCodeHandler,
     handleError
   }

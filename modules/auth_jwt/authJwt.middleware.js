@@ -1,8 +1,8 @@
 const config = require('../../configs/jwt.config')
 const jwt = require('jsonwebtoken')
-const { ErrorHandler, handleError } = require('../../helpers/error_handle/errorHandle')
+const { ErrorHandler, handleError } = require('../../helpers/error_handle/error_handle')
 const client = require("../../helpers/redis/connect_redis")
-const authJwtType = require('../auth_jwt/authJwt.type')
+const authJwtType = require('./authJwt.type')
 const { user } = require('../../database/configs/db.config')
 const { set } = require('../../helpers/redis/connect_redis')
 const BLACKLIST_TOKEN_HASH_KEY = 'blacklist_token_hash'

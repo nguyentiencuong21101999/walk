@@ -15,11 +15,15 @@ app.use(express.json())
 
 require('./database/connection/db.connection')
 
-const {handleError} = require('./helpers/error_handle/errorHandle')
+const {handleError} = require('./helpers/error_handle/error_handle')
 const userRouter = require("./modules/user/user.router")
 const roleRouter = require("./modules/role/role.router")
 app.use('/user', userRouter);
 app.use('/role',roleRouter);
+
+app.post('/test',(req,res,next) =>{
+
+})
 
 app.use((err, req, res, next) => {
   handleError(err, res);

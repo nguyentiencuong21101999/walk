@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const saltRounds = require('../../configs/bcrypt.config');
-const {ErrorHandler} = require('../error_handle/errorHandle');
+const {ErrorHandler} = require('../error_handle/error_handle');
 
 // hash
 const hashPassword = async(password)=>{

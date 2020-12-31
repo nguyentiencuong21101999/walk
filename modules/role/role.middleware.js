@@ -1,4 +1,4 @@
-const { ErrorHandler, handleError } = require('../../helpers/error_handle/errorHandle');
+const { ErrorHandler, handleError } = require('../../helpers/error_handle/error_handle');
 
 isAdmin = (req, res, next) => {
     const user = req.user;
