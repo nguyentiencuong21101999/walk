@@ -3,12 +3,9 @@ const jwt = require('jsonwebtoken')
 const { ErrorHandler, handleError } = require('../../helpers/error_handle/error_handle')
 const client = require("../../helpers/redis/connect_redis")
 const authJwtType = require('./authJwt.type')
-const { user } = require('../../database/configs/db.config')
-const { set } = require('../../helpers/redis/connect_redis')
 const BLACKLIST_TOKEN_HASH_KEY = 'blacklist_token_hash'
 const REFRESH_TOKEN_HASH_KEY = 'refresh_token_hash'
 const generatorToken = (user) => {
-
     const token = jwt.sign(
         user,
         config.jwt.tokenConfig.TOKEN_SECRET,
@@ -34,7 +31,7 @@ const getStoredToken = (key, userId) => new Promise((resolve, reject) => {
     })
 
 })
-
+    
 const storeToken = async (token, key) => {
 
     const decodedToken = decodeToken(token)
@@ -53,6 +50,7 @@ const storeToken = async (token, key) => {
 const validateToken = (token, key) => new Promise((resolve, reject) => {
 
     const decodedToken = decodeToken(token)
+
     const userId = decodedToken && decodedToken.id
 
     if (!userId) {
@@ -72,11 +70,11 @@ const validateToken = (token, key) => new Promise((resolve, reject) => {
 const verifyAccessToken = async (req, res, next) => {
     try {
         const token = getTokenFromHeader(req)
+
         const isValid = await validateToken(token, authJwtType.accessToken.key)
         if (!token || !isValid) {
-            throw new ErrorHandler(ErrorCode.Unauthorized)
+            throw new ErrorHandler("Token is not valid!")
         }
-
         await jwt.verify(token, authJwtType.accessToken.secret,(err,decodedToken) =>{
             if (decodedToken) {
                 const user = {
@@ -118,8 +116,6 @@ const verifyRefreshToken = async (req, res, next) => {
             res.json(new ErrorHandler(403, "DecodeTokenFailed"));
         }
         // validateToken  retunr true <=> co tren redis
-
-
     } catch (err) {
         next(err);
     }

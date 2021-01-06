@@ -29,7 +29,7 @@ module.exports.signin = (req, res, next) => {
         if (err) {
             next(err)
         }
-        if(data){
+        if (data) {
             let info = {};
             data[0].map((value, key) => {
                 info = value
@@ -45,36 +45,56 @@ module.exports.signin = (req, res, next) => {
                 authJwt.storeToken(generator.token, authJwtType.accessToken.key)
                 authJwt.storeToken(generator.refreshToken, authJwtType.refreshToken.key)
                 res.json({
+                    info:info,
                     accessToken: generator.token,
-                    refreshToken: generator.refreshToken
+                    refreshToken: generator.refreshToken,
+
                 })
-            }else{
+            } else {
                 res.json(new ErrorCodeHandler("email or password is not valid."))
             }
         }
-        
+
     })
 
 
 }
 
 module.exports.signup = async (req, res, next) => {
-    console.log(req.body);
-    const { email, password, fistName, lastName, role } = req.body;
+    const { email, password, fistName, lastName, role } = req.body
     const hash = await bcrypt.hashPassword(password);
     querySql(model.insertUser(email, hash, fistName, lastName, role), (err, data) => {
         if (err) {
             next(err)
         }
-        res.json(new successResponse(data));
+        const temp = data[0];
+        const user = {};
+        temp.map(value => {
+            user.id = value.id;
+            user.role =value.role;
+        })
+        const generator = authJwt.generatorToken(user);
+        authJwt.storeToken(generator.token, authJwtType.accessToken.key);
+        authJwt.storeToken(generator.refreshToken, authJwtType.refreshToken.key);
+
+        res.json(new successResponse(
+            {
+                info:user,
+                accessToken : generator.token,
+                refreshToken:generator.refreshToken
+            }
+        ));
     })
 }
 
 module.exports.refreshToken = async (req, res) => {
-    const { refreshToken } = req.body
+    const {token, refreshToken } = req.body
     const user = req.user;
     const generators = generator.generatorToken(user);
-    await authJwt.revokeToken(refreshToken, authJwtType.refreshToken.key)
+    await authJwt.revokeToken(token, authJwtType.accessToken.key);
+    await authJwt.revokeToken(refreshToken, authJwtType.refreshToken.key);
+   
+    await authJwt.storeToken(generators.token, authJwtType.accessToken.key)
     await authJwt.storeToken(generators.refreshToken, authJwtType.refreshToken.key)
     const data = {
         newToken: generators.token,

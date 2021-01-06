@@ -27,6 +27,4 @@ authUser.validateSignout,
 authJwt.checkAccessToken,
 controller.signout)
 
-
-
 module.exports = router;

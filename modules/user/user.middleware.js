@@ -7,8 +7,12 @@ const validateGetUserByEmail = async (req, res, next) => {
             email: joi.string().lowercase().email().required()
         })
         const validation = schema.validate(req.body)
-        await validate(req, res, next, validation)
-    }catch{
+        let validates = await validate(validation);
+        if(!validates){
+            next()
+        }
+        
+    }catch(err){
         next(err)
     }
    
@@ -50,6 +54,7 @@ const validateSingup = async(req,res,next) =>{
 const validateRefreshToken = async(req,res,next) =>{
     try{
         const schema = joi.object({
+            token:joi.string().required(),
             refreshToken: joi.string().required()
         })
         const validation = schema.validate(req.body)
