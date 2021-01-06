@@ -24,8 +24,12 @@ const vaidateToken = async (req, res, next) => {
         const schema = joi.object({
             token: joi.string().required()
         })
-        const validation = schema.validate(req.body)
-        await validate(req, res, next, validation)
+        const validates = schema.validate(req.body)
+        let validation = validate(validates);
+        if (validation !== 1) {
+            res.json(validation) 
+        }
+        next()
     }catch{
         next(err)
     }
