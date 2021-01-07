@@ -1,7 +1,5 @@
 const joi = require('joi')
 const validate = require('../../helpers/validate_joi/validate_joi');
-const { ErrorCodeHandler } = require('../../helpers/error_handle/error_handle')
-
 const validateGetUserByEmail = (req, res, next) => {
     try {
         const schema = joi.object({
@@ -52,7 +50,7 @@ const validateSingup = async (req, res, next) => {
         const validates = schema.validate(req.body)
         let validation = validate(validates);
         if (validation !== 1) {
-            res.json(validation) 
+            res.json(validation)
         }
         next()
 
@@ -69,10 +67,10 @@ const validateRefreshToken = async (req, res, next) => {
         const validates = schema.validate(req.body)
         let validation = validate(validates);
         if (validation !== 1) {
-            res.json(validation) 
+            res.json(validation)
         }
         next()
-       
+
     } catch {
         next(err)
     }
@@ -88,7 +86,7 @@ const validateSignout = (async (req, res, next) => {
         const validates = schema.validate(req.body)
         let validation = validate(validates);
         if (validation !== 1) {
-            res.json(validation) 
+            res.json(validation)
         }
         next()
     } catch (err) {

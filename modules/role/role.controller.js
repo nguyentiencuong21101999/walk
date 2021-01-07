@@ -1,24 +1,20 @@
-const model = require('./role.model')
-const querySql = require('../../database/query/db.query')
-const {successResponse} = require('../../helpers/response_handle/response_handle');
-module.exports.isClient = (req,res,next) =>{
+const modelRole = require('./role.model')
+const { successResponse } = require('../../helpers/response_handle/response_handle');
+module.exports.isClient = async (req, res, next) => {
     const userId = req.user.id;
-    querySql(model.getInfoById(userId),(err,data) =>{
-        if(err) {
-            next(err)
-        }
-        res.json(new successResponse(data[0]))
-    })
-     
+    const results = await modelRole.getInfoById(userId)
+    if(results.err){
+        next(results.err)
+    }
+    res.json(
+        new successResponse(results[0])
+    )
 }
 
-module.exports.isAdmin = (req,res,next) =>{
+module.exports.isAdmin = async (req, res, next) => {
     const userId = req.user.id;
-    querySql(model.getInfoById(userId),(err,data) =>{
-        if(err) {
-            next(err)
-        }
-        res.json(new successResponse(data[0]))
-    })
-     
+    const results = await modelRole.getInfoById(userId)
+    res.json(
+        new successResponse(results[0])
+    )
 }
