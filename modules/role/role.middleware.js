@@ -3,7 +3,7 @@ const validate = require('../../helpers/validate_joi/validate_joi')
 const { ErrorHandler, handleError } = require('../../helpers/error_handle/error_handle');
 
 isAdmin = (req, res, next) => {
-    const user = req.user;
+    const user = req.user; 
     if (user.role === 2) {
         next()
     } else {

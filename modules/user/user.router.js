@@ -5,8 +5,8 @@ const authUser = require('./user.middleware')
 
 const controller = require('../user/user.controller')
 router.post('/',
-authUser.validateGetUserByEmail
-,controller.getUserByEmail
+// authUser.validateGetUserByEmail,
+controller.getUserByEmail
 )
 router.post('/signin',
 authUser.validateSignin,

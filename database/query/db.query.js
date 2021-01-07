@@ -1,17 +1,25 @@
 
+const { param } = require('../../modules/user/user.router');
 const connection = require('../connection/db.connection')
-const { ErrorCodeHandler } = require('../../helpers/error_handle/error_handle')
 const querySql = (strQuery, callback) => {
     return connection.query(strQuery, callback);
 }
 /** Execute raw query */
-const query = async (sql, params) => {
-    try {
-        const { results } = await pool.query(sql, escapeParams(params))
-        return results
-    } catch (err) {
-        throw err
-    }
+const query = async ( params) => {
+    
+    // console.log(params);
+    // // try {
+    // //     const { results } = await pool.query(sql, escapeParams(params))
+    // //     return results
+    // // } catch (err) {
+    // //     throw err
+    // // }
+    // //let a = params;
+    // let a = connection.escape(params);
+    // const URL = `select * from user where id = ` + a ;
+    // connection.query(URL,(err,data) =>{
+    //     console.log(data);
+    // })
 }
 const queryProc = (query) => {
     return new Promise((resolve, reject) => {
@@ -43,11 +51,14 @@ const escapeParams = (params) => {
     for (let param of params) {
         //mysql === connection
         escapedParams.push(connection.escape(param))
+        console.log(params);
+        console.log(escapedParams.join(','));
     }
     return escapedParams.join(',');
 }
 
 module.exports = {
     querySql,
-    sproc
+    sproc,
+    query
 };
