@@ -13,12 +13,12 @@ const { ErrorHandler, ErrorCodeHandler } = require('../../helpers/error_handle/e
 
 module.exports.getUserByEmail = async (req, res, next) => {
     const { email } = req.body;
-     const results = await userModel.getUserByEmail(email)
-    // const results = await userModel.getUserByEmail(email);
-    // if (results.err) {
-    //     next(results.err)
-    // }
-    // res.json(new successResponse(results[0]))
+    //  const results = await userModel.getUserByEmail(email)
+    const results = await userModel.getUserByEmail(email);
+    if (results.err) {
+        next(results.err)
+    }
+    res.json(new successResponse(results[0]))
 }
 module.exports.signin = async (req, res, next) => {
     console.log(req.body);
