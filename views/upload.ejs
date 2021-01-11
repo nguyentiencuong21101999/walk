@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .form-upload {
+        margin-left: 40%;
+    }
+
+    input {
+        margin-top: 20%;
+    }
+
+    button {
+        margin-top: 2%;
+    }
+</style>
+
+<body>
+    <div class='form-upload'>
+        <form action="/upload" enctype="multipart/form-data" method="POST">
+            <input multiple type="file" name="fileImage" id="file">
+            <br />
+            <button type="submit">upload</button>
+
+        </form>
+    </div>
+
+</body>
+
+</html>
