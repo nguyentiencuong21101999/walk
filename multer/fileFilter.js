@@ -1,3 +1,6 @@
+const { ErrorHandler } = require("../helpers/error_handle/error_handle");
+const { statusMulter } = require("../helpers/error_handle/status_error");
+
 const fileFIlter_image = function (req, file, cb) {
     if (file.mimetype == "image/bmp" ||
         file.mimetype == "image/png" ||
@@ -7,7 +10,7 @@ const fileFIlter_image = function (req, file, cb) {
     ) {
         cb(null, true)
     } else {
-        cb('Only image are allowed!')
+        cb(new ErrorHandler(statusMulter.isOnlyIamge))
     }
 }
 

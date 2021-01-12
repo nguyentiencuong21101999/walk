@@ -1,10 +1,9 @@
 class ErrorHandler extends Error {
-  
-    constructor(code, message) {
+    constructor(error) {
         super();
       this.status = "error";
-      this.code = code
-      this.message = message;
+      this.code = error.code
+      this.message = error.message;
     }
   }
   class ErrorCodeHandler{
@@ -17,7 +16,7 @@ class ErrorHandler extends Error {
     let object = {
       status:"error",
       code:err.code,
-      message:err.sqlMessage,
+      message:err.message,
     }
     res.send(object)
   };

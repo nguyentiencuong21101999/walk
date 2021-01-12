@@ -2,7 +2,7 @@
 const joi = require('joi')
 const userModel = require('./user.model')
 const bcrypt = require('../../helpers/bcrypt/bcrypt')
-const { successResponse } = require('../../helpers/response_handle/response_handle');
+const { successResponse, handleSuccess } = require('../../helpers/response_handle/response_handle');
 const authJwt = require('../auth_jwt/authJwt.middleware')
 const authJwtType = require('../auth_jwt/authJwt.type')
 const querySql = require('../../database/query/db.query');
@@ -24,7 +24,6 @@ module.exports.signin = async (req, res, next) => {
     console.log(req.body);
     const { email, password } = req.body;
     const results = await userModel.getUserByEmail(email)
-
     if (results.err) {
         next(results.err)
     }
@@ -81,7 +80,8 @@ module.exports.signup = async (req, res, next) => {
 }
 
 module.exports.refreshToken = async (req, res) => {
-    const { token, refreshToken } = req.body
+    const { refreshToken } = req.body
+    const token = req.headers.authorization;
     const user = req.user;
     const generators = generator.generatorToken(user);
     await authJwt.revokeToken(token, authJwtType.accessToken.key);
@@ -97,7 +97,8 @@ module.exports.refreshToken = async (req, res) => {
     res.send(data)
 }
 module.exports.signout = async (req, res) => {
-    const { refreshToken, token } = req.body;
+    const { refreshToken } = req.body;
+    const token = req.headers.authorization;
     await authJwt.revokeToken(token, authJwtType.accessToken.key)
     await authJwt.revokeToken(refreshToken, authJwtType.refreshToken.key);
     res.json(
@@ -105,30 +106,23 @@ module.exports.signout = async (req, res) => {
     )
 }
 
-module.exports.upload_single = async (req, res, next) => {
-    console.log(req.body); 
+module.exports.uploadAvatar = async (req, res, next) => {
+    const { id } = req.user;
     await upload_single("fileImage", req, res, next)
         .then(
-            results => res.json(
-                new successResponse(results)
-            )
+            async (results) => {
+                const data = await userModel.uploadAvatarUser(id, results.filename)
+                if (data.err) {
+                    next(data.err)
+                }
+                res.json(
+                    new successResponse(data[0])
+                )
+            }
         )
         .catch(
-            err => res.json(
-                new ErrorCodeHandler(err)
-            )
+            err => next(err)
         )
-}
-module.exports.upload_multiple = async (req, res, next) => {
-    await upload_multiple("fileImage", 10, req, res, next)
-        .then(
-            results => res.json(
-                new successResponse(results)
-            )
-        )
-        .catch(err => res.json(
-            new ErrorCodeHandler(err)
-        ))
 }
 
 

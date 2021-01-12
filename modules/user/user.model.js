@@ -9,4 +9,8 @@ user.getUserByEmail = (email) =>{
 user.insertUser =(email,password,fistName,lastName,role) =>{
    return procedure.sproc("insertUser",[email,password,fistName,lastName,role]);
 }
+
+user.uploadAvatarUser =(id,image) =>{
+   return procedure.sproc("uploadAvatarUser",[id,image])
+}
 module.exports = user;

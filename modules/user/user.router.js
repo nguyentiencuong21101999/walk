@@ -13,8 +13,8 @@ authUser.validateSignin,
 controller.signin
 )
 router.post('/signup',
-// authUser.validateSingup,
-// authJwt.checkAccessToken,
+authUser.validateSingup,
+authJwt.checkAccessToken,
 controller.signup
 )
 router.post('/refreshToken',
@@ -27,11 +27,8 @@ authUser.validateSignout,
 authJwt.checkAccessToken,
 controller.signout)
 
-router.post("/upload_single",
-controller.upload_single
-)
-
-router.post("/upload_multiple",
-controller.upload_multiple
+router.post('/upload-avatar',
+authJwt.verifyAccessToken,
+controller.uploadAvatar
 )
 module.exports = router;

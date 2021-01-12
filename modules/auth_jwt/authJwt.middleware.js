@@ -1,10 +1,10 @@
 const config = require('../../configs/jwt.config')
 const jwt = require('jsonwebtoken')
 const { ErrorHandler, handleError } = require('../../helpers/error_handle/error_handle')
+const {statusError,statusJwt} = require('../../helpers/error_handle/status_error')
 const client = require("../../helpers/redis/connect_redis")
 const authJwtType = require('./authJwt.type')
-const BLACKLIST_TOKEN_HASH_KEY = 'blacklist_token_hash'
-const REFRESH_TOKEN_HASH_KEY = 'refresh_token_hash'
+
 const generatorToken = (user) => {
     const token = jwt.sign(
         user,
@@ -25,13 +25,13 @@ const generatorToken = (user) => {
 const getStoredToken = (key, userId) => new Promise((resolve, reject) => {
     client.hget(key, userId, (err, tokens) => {
         if (err) {
-            return reject(err)
+             reject(err)
         }
         resolve(tokens === null ? new Set() : new Set(tokens.split(',')))
     })
 
 })
-    
+
 const storeToken = async (token, key) => {
 
     const decodedToken = decodeToken(token)
@@ -48,15 +48,13 @@ const storeToken = async (token, key) => {
  * Return true if user token existed // check refreshToken tren redis
 */
 const validateToken = (token, key) => new Promise((resolve, reject) => {
-
     const decodedToken = decodeToken(token)
-
     const userId = decodedToken && decodedToken.id
-
+    console.log(userId);
     if (!userId) {
-        res.json(new ErrorHandler(403, "DecodeTokenFailed"));
+       throw new ErrorHandler(statusJwt.decodeFails)
     }
-    const result = client.hexists(key, userId, async (err, reply) => {
+    client.hexists(key, userId, async (err, reply) => {
         if (reply === 1) {
             const currentToken = await getStoredToken(key, userId)
             return resolve(currentToken.has(token))
@@ -66,16 +64,17 @@ const validateToken = (token, key) => new Promise((resolve, reject) => {
 
 })
 
-
+//check isValid
 const verifyAccessToken = async (req, res, next) => {
     try {
         const token = getTokenFromHeader(req)
-
+    
         const isValid = await validateToken(token, authJwtType.accessToken.key)
         if (!token || !isValid) {
-            throw new ErrorHandler("Token is not valid!")
+            throw new ErrorHandler(statusJwt.isValidToken)
         }
-        await jwt.verify(token, authJwtType.accessToken.secret,(err,decodedToken) =>{
+        //check expire
+        await jwt.verify(token, authJwtType.accessToken.secret, (err, decodedToken) => {
             if (decodedToken) {
                 const user = {
                     id: decodedToken.id,
@@ -83,26 +82,23 @@ const verifyAccessToken = async (req, res, next) => {
                 }
                 req.user = user;
                 return next()
-            }else{
-                res.json(new ErrorHandler(403,"Token expire!"))
+            } else {
+                throw new ErrorHandler(statusJwt.expireToken)
             }
         })
-        
-   
     } catch (err) {
-        next(err)
+       next(err)
     }
 
 }
 
 const verifyRefreshToken = async (req, res, next) => {
     try {
-        const { refreshToken } = req.body
+        const { refreshToken } = req.body;
         //if validateTken  return false <=> khong cos tren redis
-        const isValid = await validateToken(refreshToken, authJwtType.refreshToken.key)
+        const isValid = await validateToken(refreshToken, authJwtType.refreshToken.key) 
         if (!isValid) {
-            res.json(new ErrorHandler(403, "InvalidRefreshToken"))
-
+            throw new ErrorHandler(statusJwt.isValidRefreshToken)
         } else {
             const decodedToken = jwt.verify(refreshToken, authJwtType.refreshToken.secret)
             if (decodedToken) {
@@ -113,7 +109,7 @@ const verifyRefreshToken = async (req, res, next) => {
                 req.user = user;
                 return next();
             }
-            res.json(new ErrorHandler(403, "DecodeTokenFailed"));
+            throw new ErrorHandler(statusJwt.decodeFails)
         }
         // validateToken  retunr true <=> co tren redis
     } catch (err) {
@@ -126,14 +122,10 @@ const revokeToken = async (token, key) => {
     const userId = decodedToken && decodedToken.id
     const currentTokens = await getStoredToken(key, userId)
     currentTokens.delete(token)
-    // console.log(currentTokens.delete(token));
-    // console.log([...currentTokens].join(','));
-
     client.hset(key, userId, [...currentTokens].join(','))
 
 }
 const checkAccessToken = async (req, res, next) => {
-
     try {
         const token = getTokenFromHeader(req)
         const decodedToken = jwt.verify(token, authJwtType.accessToken.secret)
@@ -150,9 +142,9 @@ const checkAccessToken = async (req, res, next) => {
 
 }
 const getTokenFromHeader = (req) => {
-    let { token } = req.body
+    let token  = req.headers.authorization;
     if (!token) {
-        res.json(new ErrorHandler(403, 'No token provided.'))
+        throw new ErrorHandler(statusError.Unauthorized)
     }
     return token
 }

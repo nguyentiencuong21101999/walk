@@ -31,14 +31,6 @@ const roleRouter = require("./modules/role/role.router");
 app.use('/user', userRouter);
 app.use('/role', roleRouter);
 
-
-app.get('/upload',(req,res) =>{
-  res.render("upload")
-})
-
-app.post('/upload',upload.none(),(req,res) =>{
-  console.log( JSON.stringify(req.body));
-})
 app.use((err, req, res, next) => {
   handleError(err, res);
 });
