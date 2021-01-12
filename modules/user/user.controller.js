@@ -8,7 +8,7 @@ const authJwtType = require('../auth_jwt/authJwt.type')
 const querySql = require('../../database/query/db.query');
 const generator = require('../auth_jwt/authJwt.middleware');
 const { ErrorHandler, ErrorCodeHandler } = require('../../helpers/error_handle/error_handle')
-
+const { upload_single, upload_multiple } = require('../../multer/multer')
 
 
 module.exports.getUserByEmail = async (req, res, next) => {
@@ -104,3 +104,31 @@ module.exports.signout = async (req, res) => {
         { mesage: "logout success" }
     )
 }
+
+module.exports.upload_single = async (req, res, next) => {
+    console.log(req.body); 
+    await upload_single("fileImage", req, res, next)
+        .then(
+            results => res.json(
+                new successResponse(results)
+            )
+        )
+        .catch(
+            err => res.json(
+                new ErrorCodeHandler(err)
+            )
+        )
+}
+module.exports.upload_multiple = async (req, res, next) => {
+    await upload_multiple("fileImage", 10, req, res, next)
+        .then(
+            results => res.json(
+                new successResponse(results)
+            )
+        )
+        .catch(err => res.json(
+            new ErrorCodeHandler(err)
+        ))
+}
+
+

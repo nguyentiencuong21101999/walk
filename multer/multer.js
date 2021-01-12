@@ -1,5 +1,5 @@
 //-----MULTER------
-
+const fileFilter_image = require('../multer/fileFilter')
 var multer = require('multer');
 var storage = multer.diskStorage({
     destination: function (_req, file, cb) {
@@ -13,18 +13,7 @@ const upload_single = (file_name, req, res, next) => {
     return new Promise((resolve, reject) => {
         var upload = multer({
             storage: storage,
-            fileFilter: function (req, file, cb) {
-                if (file.mimetype == "image/bmp" ||
-                    file.mimetype == "image/png" ||
-                    file.mimetype == "image/gif" ||
-                    file.mimetype == "image/jpg" ||
-                    file.mimetype == "image/jpeg"
-                ) {
-                    cb(null, true)
-                } else {
-                    cb('Only image are allowed!')
-                }
-            }
+            fileFilter: fileFilter_image
         }).single(file_name)
 
         upload(req, res, (err) => {
@@ -41,18 +30,7 @@ const upload_multiple  = (file_name,limit,req,res,next) =>{
     return new Promise((resolve, reject) => {
         var upload = multer({
             storage: storage,
-            fileFilter: function (req, file, cb) {
-                if (file.mimetype == "image/bmp" ||
-                    file.mimetype == "image/png" ||
-                    file.mimetype == "image/gif" ||
-                    file.mimetype == "image/jpg" ||
-                    file.mimetype == "image/jpeg"
-                ) {
-                    cb(null, true)
-                } else {
-                    cb('Only image are allowed!')
-                }
-            }
+            fileFilter: fileFilter_image
         }).array(file_name,limit)
 
         upload(req, res, (err) => {
