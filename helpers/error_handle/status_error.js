@@ -41,6 +41,10 @@ const statusJwt = {
     expireToken: {
         code: 403,
         message: "Token expire!"
+    },
+    doesNotExits: {
+        code: 403,
+        message: "Token or refreshToken does not exits"
     }
 }
 const statusMulter = {
@@ -48,9 +52,13 @@ const statusMulter = {
         code: 403,
         message: "upload fail!"
     },
-    isOnlyIamge:{
-        code:403,
-        message:"Only image are allowed!"
+    isOnlyIamge: {
+        code: 403,
+        message: "Only image are allowed!"
+    },
+    chooseFile: {
+        code: 403,
+        message: "Select at least one file to upload!"
     }
 }
 module.exports = {

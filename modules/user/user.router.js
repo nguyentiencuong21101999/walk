@@ -19,6 +19,7 @@ controller.signup
 )
 router.post('/refreshToken',
 authUser.validateRefreshToken,
+authJwt.checkAccessToken,
 authJwt.verifyRefreshToken,
 controller.refreshToken
 )
@@ -28,6 +29,7 @@ authJwt.checkAccessToken,
 controller.signout)
 
 router.post('/upload-avatar',
+authUser.validateUploadAvatar,
 authJwt.verifyAccessToken,
 controller.uploadAvatar
 )

@@ -14,11 +14,6 @@ app.use(express.static("public"));
 //PORT
 const PORT = process.env.PORT;
 var multer  = require('multer');
-var upload = multer();
-//Body parser
-// var bodyParser = require('body-parser');
-// app.use(bodyParser.urlencoded({extended: true}));
-// app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json())
 

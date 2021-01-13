@@ -20,12 +20,15 @@ const upload_single = (file_name, req, res, next) => {
             fileFilter: fileFilter_image
         }).single(file_name)
         upload(req, res, (err) => {
+            if (!req.file) {
+                next(new ErrorHandler(statusMulter.chooseFile))
+            }
             if (err) {
                 next(err)
-            }else{
+            } else {
                 resolve(req.file)
             }
-          
+
         })
     })
 
@@ -42,10 +45,10 @@ const upload_multiple = (file_name, limit, req, res, next) => {
             //err cua he thong hoac custom (fileFilter)
             if (err) {
                 reject(err)
-            }else{
+            } else {
                 resolve(req.files)
             }
-          
+
         })
     })
 }

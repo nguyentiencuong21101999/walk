@@ -1,7 +1,7 @@
 const config = require('../../configs/jwt.config')
 const jwt = require('jsonwebtoken')
 const { ErrorHandler, handleError } = require('../../helpers/error_handle/error_handle')
-const {statusError,statusJwt} = require('../../helpers/error_handle/status_error')
+const { statusError, statusJwt } = require('../../helpers/error_handle/status_error')
 const client = require("../../helpers/redis/connect_redis")
 const authJwtType = require('./authJwt.type')
 
@@ -25,7 +25,7 @@ const generatorToken = (user) => {
 const getStoredToken = (key, userId) => new Promise((resolve, reject) => {
     client.hget(key, userId, (err, tokens) => {
         if (err) {
-             reject(err)
+            reject(err)
         }
         resolve(tokens === null ? new Set() : new Set(tokens.split(',')))
     })
@@ -50,16 +50,15 @@ const storeToken = async (token, key) => {
 const validateToken = (token, key) => new Promise((resolve, reject) => {
     const decodedToken = decodeToken(token)
     const userId = decodedToken && decodedToken.id
-    console.log(userId);
     if (!userId) {
-       throw new ErrorHandler(statusJwt.decodeFails)
+        throw new ErrorHandler(statusJwt.decodeFails)
     }
     client.hexists(key, userId, async (err, reply) => {
         if (reply === 1) {
             const currentToken = await getStoredToken(key, userId)
             return resolve(currentToken.has(token))
         }
-        reject(err)
+        reject(new ErrorHandler(statusJwt.doesNotExits))
     })
 
 })
@@ -68,7 +67,6 @@ const validateToken = (token, key) => new Promise((resolve, reject) => {
 const verifyAccessToken = async (req, res, next) => {
     try {
         const token = getTokenFromHeader(req)
-    
         const isValid = await validateToken(token, authJwtType.accessToken.key)
         if (!token || !isValid) {
             throw new ErrorHandler(statusJwt.isValidToken)
@@ -87,7 +85,7 @@ const verifyAccessToken = async (req, res, next) => {
             }
         })
     } catch (err) {
-       next(err)
+        next(err)
     }
 
 }
@@ -96,7 +94,8 @@ const verifyRefreshToken = async (req, res, next) => {
     try {
         const { refreshToken } = req.body;
         //if validateTken  return false <=> khong cos tren redis
-        const isValid = await validateToken(refreshToken, authJwtType.refreshToken.key) 
+        const isValid = await validateToken(refreshToken, authJwtType.refreshToken.key)
+        console.log(isValid); 
         if (!isValid) {
             throw new ErrorHandler(statusJwt.isValidRefreshToken)
         } else {
@@ -128,21 +127,26 @@ const revokeToken = async (token, key) => {
 const checkAccessToken = async (req, res, next) => {
     try {
         const token = getTokenFromHeader(req)
-        const decodedToken = jwt.verify(token, authJwtType.accessToken.secret)
-        const user = {
-            id: decodedToken.id,
-            role: decodedToken.role
-        }
-        req.user = user;
-        next()
+        jwt.verify(token, authJwtType.accessToken.secret, (err, decodedToken) => {
+            if (err) {
+                throw new ErrorHandler(statusJwt.isValidToken)
+            }
+            const user = {
+                id: decodedToken.id,
+                role: decodedToken.role
+            }
+            req.user = user;
+            next()
 
+
+        })
     } catch (err) {
-        next()
+        next(err)
     }
 
 }
 const getTokenFromHeader = (req) => {
-    let token  = req.headers.authorization;
+    let token = req.headers.authorization;
     if (!token) {
         throw new ErrorHandler(statusError.Unauthorized)
     }
