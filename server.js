@@ -29,6 +29,7 @@ app.use('/role', roleRouter);
 app.use((err, req, res, next) => {
   handleError(err, res);
 });
+console.log(new Date());
 server.listen(PORT, function () {
   console.log(' App listening on port ' + PORT + "...");
 });

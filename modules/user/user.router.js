@@ -14,7 +14,7 @@ controller.signin
 )
 router.post('/signup',
 authUser.validateSingup,
-authJwt.checkAccessToken,
+//authJwt.checkAccessToken,
 controller.signup
 )
 router.post('/refreshToken',

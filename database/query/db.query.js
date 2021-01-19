@@ -51,8 +51,6 @@ const escapeParams = (params) => {
     for (let param of params) {
         //mysql === connection
         escapedParams.push(connection.escape(param))
-        console.log(params);
-        console.log(escapedParams.join(','));
     }
     return escapedParams.join(',');
 }

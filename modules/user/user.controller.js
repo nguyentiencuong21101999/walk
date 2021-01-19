@@ -8,31 +8,37 @@ const authJwtType = require('../auth_jwt/authJwt.type')
 const querySql = require('../../database/query/db.query');
 const generator = require('../auth_jwt/authJwt.middleware');
 const { ErrorHandler, ErrorCodeHandler } = require('../../helpers/error_handle/error_handle')
-const { upload_single, upload_multiple } = require('../../multer/multer')
+const { upload_single, upload_multiple } = require('../../multer/multer');
+const user = require('./user.model');
 
 
 module.exports.getUserByEmail = async (req, res, next) => {
-    const { email } = req.body;
-    //  const results = await userModel.getUserByEmail(email)
-    const results = await userModel.getUserByEmail(email);
-    if (results.err) {
-        next(results.err)
-    }
-    res.json(new successResponse(results[0]))
+    const results = await userModel.getAllAddress();
+    console.log(results[0]);
+    res.send(results[2])
+    // const { email } = req.body;
+    // //  const results = await userModel.getUserByEmail(email)
+    // const results = await userModel.getUserByEmail(email);
+    // if (results.err) {
+    //     next(results.err)
+    // }
+    // res.json(new successResponse(results[0]))
 }
 module.exports.signin = async (req, res, next) => {
     console.log(req.body);
     const { email, password } = req.body;
     const results = await userModel.getUserByEmail(email)
+   
     if (results.err) {
         next(results.err)
     }
+    console.log(results);
     let info = {};
     results[0].map((value, key) => {
         info = value
     })
     const user = {
-        id: info.id,
+        id: info.user_id,
         role: info.role
     }
     const compare = await bcrypt.comparePassword(password, info.password)
@@ -47,6 +53,7 @@ module.exports.signin = async (req, res, next) => {
             refreshToken: generator.refreshToken,
 
         })
+       
     } else {
         res.json(new ErrorCodeHandler("email or password is not valid."))
     }
@@ -54,25 +61,28 @@ module.exports.signin = async (req, res, next) => {
 }
 
 module.exports.signup = async (req, res, next) => {
-    const { email, password, fistName, lastName, role } = req.body
+    const { email, password, firstname, lastname,birthday,gender,phone,address_name,ward,district,province } = req.body
     const hash = await bcrypt.hashPassword(password);
-    const results = await userModel.insertUser(email, hash, fistName, lastName, role);
+    const results = await userModel.insertUser(email, hash, firstname, lastname,birthday, gender,phone,address_name,ward,district,province);
     if (results.err) {
         next(results.err)
     }
-    const temp = results[0];
-    const user = {};
-    temp.map(value => {
-        user.id = value.id;
-        user.role = value.role;
-    })
+    const info =  results[0];
+    const address = results[1];
+
+    info[0].address = address[0];
+    
+    const user =  {
+        id:info[0].user_id,
+        role:info[0].role
+    };
     const generator = authJwt.generatorToken(user);
     authJwt.storeToken(generator.token, authJwtType.accessToken.key);
     authJwt.storeToken(generator.refreshToken, authJwtType.refreshToken.key);
 
     res.json(new successResponse(
         {
-            info: user,
+            info: info[0],
             accessToken: generator.token,
             refreshToken: generator.refreshToken
         }

@@ -25,7 +25,7 @@ const validateSignin = async (req, res, next) => {
         validate(validates);
         next()
 
-    } catch {
+    } catch(err) {
         next(err)
     }
 
@@ -36,9 +36,15 @@ const validateSingup = async (req, res, next) => {
         const schema = joi.object({
             email: joi.string().lowercase().email().required(),
             password: joi.string().required(),
-            fistName: joi.string().min(5).max(100).required(),
-            lastName: joi.string().min(5).max(30).required(),
-            role: joi.string().required()
+            firstname: joi.string().min(3).max(100).required(),
+            lastname: joi.string().min(3).max(30).required(),
+            birthday:joi.date().max('2003-01-18').iso().required(), // > 18 tuoi => theo fomat yy-mm-dd
+            gender:joi.string().required(),
+            phone:joi.string().min(10).max(10).required(),
+            address_name:joi.string().required(),
+            ward:joi.number().integer().required(),
+            district:joi.number().integer().required(),
+            province:joi.number().integer().required()
 
         })
         const validates = schema.validate(req.body)
