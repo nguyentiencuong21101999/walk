@@ -1,5 +1,5 @@
 const { ErrorHandler } = require("../helpers/error_handle/error_handle");
-const { statusMulter } = require("../helpers/error_handle/status_error");
+const { statusMulter } = require("../helpers/error_handle/status_code");
 
 const fileFIlter_image = function (req, file, cb) {
     if (file.mimetype == "image/bmp" ||

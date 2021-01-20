@@ -62,10 +62,21 @@ const statusMulter = {
     }
 }
 const statusUser = {
+    passwordIsNotValid:{
+        code: 403,
+        message: "email or password is not valid."
+    }
+    ,
     emailExits:{
         code: 403,
         message: "email exits!"
     },
+    successLogout :{
+        message:"logout success ..."
+    },
+    successUploadIamge : {
+        message:"upload avatar success ..."
+    }
 
 
 }

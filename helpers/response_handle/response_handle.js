@@ -5,15 +5,12 @@ class successResponse {
         this.message = message ? message : null;
     }
 
-    // handleSuccessRes = () => {
-    //     let successRes = {
-    //         status:this.status,
-    //         message: this.message,
-    //         data: this.data,
-           
-    //     }
-    //     return successRes
-    // }
+}
+class messageSuccessResponse {
+    constructor(success) {
+        this.status = "success";
+        this.message = success.message;
+    }
 }
 
 class pagination extends successResponse {
@@ -41,4 +38,9 @@ let handleSuccess = (data, res) => {
 }
 
 
-module.exports = { successResponse, pagination, handleSuccess }
+module.exports = {
+    successResponse,
+    messageSuccessResponse,
+    pagination,
+    handleSuccess
+}

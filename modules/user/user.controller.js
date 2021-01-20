@@ -1,13 +1,13 @@
 
 const userModel = require('./user.model')
 const bcrypt = require('../../helpers/bcrypt/bcrypt')
-const { successResponse, handleSuccess } = require('../../helpers/response_handle/response_handle');
+const { successResponse, handleSuccess, messageSuccessResponse } = require('../../helpers/response_handle/response_handle');
 const authJwt = require('../auth_jwt/authJwt.middleware')
 const authJwtType = require('../auth_jwt/authJwt.type')
 const generator = require('../auth_jwt/authJwt.middleware');
 const { ErrorHandler, ErrorCodeHandler } = require('../../helpers/error_handle/error_handle')
 const { upload_single, upload_multiple } = require('../../multer/multer');
-const { statusUser } = require('../../helpers/error_handle/status_error');
+const { statusUser } = require('../../helpers/error_handle/status_code');
 
 
 
@@ -42,13 +42,12 @@ module.exports.signin = async (req, res, next) => {
                 const generator = authJwt.generatorToken(user)
                 let info_address = []
                 await userModel.getInfoById(user.id)
-                    .then( results =>{
-                       
+                    .then(results => {
+
                         const user_info = results[0];
-                        const address  = results[1];
+                        const address = results[1];
                         user_info[0].address = address[0]
                         info_address = user_info[0]
-                        console.log(user_info[0]);
                     })
                     .catch(err =>
                         next(err)
@@ -57,14 +56,13 @@ module.exports.signin = async (req, res, next) => {
                 authJwt.storeToken(generator.token, authJwtType.accessToken.key)
                 authJwt.storeToken(generator.refreshToken, authJwtType.refreshToken.key)
                 res.json({
-                    info : info_address,
+                    info: info_address,
                     accessToken: generator.token,
                     refreshToken: generator.refreshToken,
-
                 })
 
             } else {
-                res.json(new ErrorCodeHandler("email or password is not valid."))
+                res.json(new ErrorHandler(statusUser.passwordIsNotValid))
             }
         })
         .catch(err =>
@@ -148,7 +146,7 @@ module.exports.signout = async (req, res) => {
     await authJwt.revokeToken(token, authJwtType.accessToken.key)
     await authJwt.revokeToken(refreshToken, authJwtType.refreshToken.key);
     res.json(
-        { mesage: "logout success" }
+        new messageSuccessResponse(statusUser.successLogout)
     )
 }
 
@@ -156,14 +154,16 @@ module.exports.uploadAvatar = async (req, res, next) => {
     const { id } = req.user;
     await upload_single("fileImage", req, res, next)
         .then(
-            async (results) => {
-                const data = await userModel.uploadAvatarUser(id, results.filename)
-                if (data.err) {
-                    next(data.err)
-                }
-                res.json(
-                    new successResponse(data[0])
-                )
+            async (avatar) => {
+                await userModel.uploadAvatarUser(id, avatar.filename)
+                    .then( results =>{
+                        res.json(new messageSuccessResponse(statusUser.successUploadIamge))
+                    })
+                    .catch(err =>
+                        next(err)
+                    )
+               
+              
             }
         )
         .catch(

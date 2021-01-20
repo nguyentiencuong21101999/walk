@@ -1,7 +1,7 @@
 const config = require('../../configs/jwt.config')
 const jwt = require('jsonwebtoken')
 const { ErrorHandler, handleError } = require('../../helpers/error_handle/error_handle')
-const { statusError, statusJwt } = require('../../helpers/error_handle/status_error')
+const { statusError, statusJwt } = require('../../helpers/error_handle/status_code')
 const client = require("../../helpers/redis/connect_redis")
 const authJwtType = require('./authJwt.type')
 

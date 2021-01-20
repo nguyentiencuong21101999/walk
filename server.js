@@ -22,8 +22,10 @@ require('./database/connection/db.connection')
 //mullter
 const { handleError } = require('./helpers/error_handle/error_handle')
 const userRouter = require("./modules/user/user.router")
-const roleRouter = require("./modules/role/role.router");
+const eventRouter = require("./modules/event/event.router")
+const roleRouter = require("./modules/role/role.router")
 app.use('/user', userRouter);
+app.use('/event',eventRouter)
 app.use('/role', roleRouter);
 
 app.use((err, req, res, next) => {

@@ -13,7 +13,7 @@ user.insertUser = (email, password, firstname, lastname, birthday, gender, phone
 }
 
 user.uploadAvatarUser = (id, image) => {
-   return procedure.sproc("uploadAvatarUser", [id, image])
+   return procedure.sproc("upload_avatar_user", [id, image])
 }
 
 user.getAllAddress = () => {
