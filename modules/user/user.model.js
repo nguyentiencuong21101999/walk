@@ -1,7 +1,9 @@
 
 const procedure = require('../../database/query/db.query')
 const user = {};
-
+user.getInfoById = (id) =>{
+   return procedure.sproc("get_info_by_id",[id]);
+}
 user.getUserByEmail = (email) => {
    return procedure.sproc("get_user_by_email", [email])
 }

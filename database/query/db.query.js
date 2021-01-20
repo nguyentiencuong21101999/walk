@@ -1,4 +1,5 @@
 
+const { ErrorHandler } = require('../../helpers/error_handle/error_handle');
 const { param } = require('../../modules/user/user.router');
 const connection = require('../connection/db.connection')
 const querySql = (strQuery, callback) => {
@@ -39,9 +40,7 @@ const sproc = async (procName, params) => {
         const results = await queryProc(query)
         return results;
     } catch (err) {
-        return {
-            err: err
-        }
+        throw new ErrorHandler(err )
     }
 }
 

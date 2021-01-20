@@ -1,15 +1,15 @@
 
-const joi = require('joi')
 const userModel = require('./user.model')
 const bcrypt = require('../../helpers/bcrypt/bcrypt')
 const { successResponse, handleSuccess } = require('../../helpers/response_handle/response_handle');
 const authJwt = require('../auth_jwt/authJwt.middleware')
 const authJwtType = require('../auth_jwt/authJwt.type')
-const querySql = require('../../database/query/db.query');
 const generator = require('../auth_jwt/authJwt.middleware');
 const { ErrorHandler, ErrorCodeHandler } = require('../../helpers/error_handle/error_handle')
 const { upload_single, upload_multiple } = require('../../multer/multer');
-const user = require('./user.model');
+const { statusUser } = require('../../helpers/error_handle/status_error');
+
+
 
 
 module.exports.getUserByEmail = async (req, res, next) => {
@@ -25,68 +25,104 @@ module.exports.getUserByEmail = async (req, res, next) => {
     // res.json(new successResponse(results[0]))
 }
 module.exports.signin = async (req, res, next) => {
-    console.log(req.body);
     const { email, password } = req.body;
-    const results = await userModel.getUserByEmail(email)
-   
-    if (results.err) {
-        next(results.err)
-    }
-    console.log(results);
-    let info = {};
-    results[0].map((value, key) => {
-        info = value
-    })
-    const user = {
-        id: info.user_id,
-        role: info.role
-    }
-    const compare = await bcrypt.comparePassword(password, info.password)
-    if (compare === true) {
-        const generator = authJwt.generatorToken(user)
-        //store refreshToken
-        authJwt.storeToken(generator.token, authJwtType.accessToken.key)
-        authJwt.storeToken(generator.refreshToken, authJwtType.refreshToken.key)
-        res.json({
-            info: info,
-            accessToken: generator.token,
-            refreshToken: generator.refreshToken,
+    userModel.getUserByEmail(email)
+        .then(async results => {
+            let info = {};
+            results[0].map((value, key) => {
+                info = value
+            })
+            const user = {
+                id: info.user_id,
+                role: info.role
+            }
+            const compare = await bcrypt.comparePassword(password, info.password)
 
+            if (compare === true) {
+                const generator = authJwt.generatorToken(user)
+                let info_address = []
+                await userModel.getInfoById(user.id)
+                    .then( results =>{
+                       
+                        const user_info = results[0];
+                        const address  = results[1];
+                        user_info[0].address = address[0]
+                        info_address = user_info[0]
+                        console.log(user_info[0]);
+                    })
+                    .catch(err =>
+                        next(err)
+                    )
+                //store refreshToken
+                authJwt.storeToken(generator.token, authJwtType.accessToken.key)
+                authJwt.storeToken(generator.refreshToken, authJwtType.refreshToken.key)
+                res.json({
+                    info : info_address,
+                    accessToken: generator.token,
+                    refreshToken: generator.refreshToken,
+
+                })
+
+            } else {
+                res.json(new ErrorCodeHandler("email or password is not valid."))
+            }
         })
-       
-    } else {
-        res.json(new ErrorCodeHandler("email or password is not valid."))
-    }
+        .catch(err =>
+            next(err)
+        )
+
+    // console.log(results);
+
+
 
 }
 
 module.exports.signup = async (req, res, next) => {
-    const { email, password, firstname, lastname,birthday,gender,phone,address_name,ward,district,province } = req.body
+    const { email, password, firstname, lastname, birthday, gender, phone, address_name, ward, district, province } = req.body
     const hash = await bcrypt.hashPassword(password);
-    const results = await userModel.insertUser(email, hash, firstname, lastname,birthday, gender,phone,address_name,ward,district,province);
-    if (results.err) {
-        next(results.err)
-    }
-    const info =  results[0];
-    const address = results[1];
 
-    info[0].address = address[0];
-    
-    const user =  {
-        id:info[0].user_id,
-        role:info[0].role
-    };
-    const generator = authJwt.generatorToken(user);
-    authJwt.storeToken(generator.token, authJwtType.accessToken.key);
-    authJwt.storeToken(generator.refreshToken, authJwtType.refreshToken.key);
+    userModel.getUserByEmail(email)
+        .then(results => {
+            if (results[0].length > 0) {
+                next(new ErrorHandler(statusUser.emailExits))
+            } else {
+                userModel.insertUser(email, hash, firstname, lastname, birthday, gender, phone, address_name, ward, district, province)
+                    .then(
+                        results => {
+                            const info = results[0];
+                            const address = results[1];
 
-    res.json(new successResponse(
-        {
-            info: info[0],
-            accessToken: generator.token,
-            refreshToken: generator.refreshToken
-        }
-    ));
+                            info[0].address = address[0];
+
+                            const user = {
+                                id: info[0].user_id,
+                                role: info[0].role
+                            };
+                            const generator = authJwt.generatorToken(user);
+                            authJwt.storeToken(generator.token, authJwtType.accessToken.key);
+                            authJwt.storeToken(generator.refreshToken, authJwtType.refreshToken.key);
+
+                            res.json(new successResponse(
+                                {
+                                    info: info[0],
+                                    accessToken: generator.token,
+                                    refreshToken: generator.refreshToken
+                                }
+                            ));
+
+                        })
+                    .catch(err =>
+                        next(err)
+                    )
+            }
+        })
+        .catch(err =>
+            next(err)
+        )
+
+
+
+
 }
 
 module.exports.refreshToken = async (req, res) => {

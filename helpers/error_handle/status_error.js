@@ -61,9 +61,18 @@ const statusMulter = {
         message: "Select at least one file to upload!"
     }
 }
+const statusUser = {
+    emailExits:{
+        code: 403,
+        message: "email exits!"
+    },
+
+
+}
 module.exports = {
     statusError,
     statusJwt,
-    statusMulter
+    statusMulter,
+    statusUser
 };
 
