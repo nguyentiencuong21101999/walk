@@ -15,40 +15,39 @@ var storage = multer.diskStorage({
 });
 const upload_single = (file_name, req, res, next) => {
     return new Promise((resolve, reject) => {
-        var upload = multer({
-            storage: storage,
-            fileFilter: fileFilter_image
-        }).single(file_name)
-        upload(req, res, (err) => {
-            if (!req.file) {
-                next(new ErrorHandler(statusMulter.chooseFile))
-            }
-            if (err) {
-                next(err)
-            } else {
-                resolve(req.file)
-            }
+        try {
+            var upload = multer({
+                storage: storage,
+                fileFilter: fileFilter_image
+            }).single(file_name)
 
-        })
+            upload(req, res, (err) => {
+                if (err) {
+                    next(err)
+                } else {
+                    if (!req.file) {
+                        next(new ErrorHandler(statusMulter.chooseFile))
+                    }
+                    resolve(req.file)
+                }
+
+            })
+        } catch (err) {
+            next(err)
+        }
+
     })
 
 }
 
 const upload_single_formdata = (file_name, req, res, next) => {
+
     return new Promise((resolve, reject) => {
         var upload = multer({
             storage: storage,
             fileFilter: fileFilter_image
         }).single(file_name)
         upload(req, res, (err) => {
-            if (!req.file) {
-                next(new ErrorHandler(statusMulter.chooseFile))
-            }
-            if (err) {
-                next(err)
-            } else {
-                resolve(req.file)
-            }
 
         })
     })

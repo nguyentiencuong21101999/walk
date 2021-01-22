@@ -62,6 +62,7 @@ const statusMulter = {
     }
 }
 const statusUser = {
+    //error
     passwordIsNotValid:{
         code: 403,
         message: "email or password is not valid."
@@ -71,19 +72,39 @@ const statusUser = {
         code: 403,
         message: "email exits!"
     },
+    //join
+    errorJoinEvent:{
+        message:"Event Joined!"
+    },
+    joinEvent:{
+        message:"Join Event Success ..."
+    },
+    eventNotValid:{
+        message:"Event is not valid!"
+    },
+    //logout
     successLogout :{
         message:"logout success ..."
     },
+    //uploadImage
     successUploadIamge : {
         message:"upload avatar success ..."
     }
 
 
 }
+const statusEvent = {
+    //Success
+    addEvent:{
+        message:"Add success ..."
+    }
+   
+}
 module.exports = {
     statusError,
     statusJwt,
     statusMulter,
-    statusUser
+    statusUser,
+    statusEvent
 };
 

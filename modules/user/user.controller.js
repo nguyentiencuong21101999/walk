@@ -1,12 +1,12 @@
 
 const userModel = require('./user.model')
 const bcrypt = require('../../helpers/bcrypt/bcrypt')
-const { successResponse, handleSuccess, messageSuccessResponse } = require('../../helpers/response_handle/response_handle');
+const { successResponse, messageSuccessResponse } = require('../../helpers/response_handle/response_handle');
 const authJwt = require('../auth_jwt/authJwt.middleware')
 const authJwtType = require('../auth_jwt/authJwt.type')
 const generator = require('../auth_jwt/authJwt.middleware');
-const { ErrorHandler, ErrorCodeHandler } = require('../../helpers/error_handle/error_handle')
-const { upload_single, upload_multiple } = require('../../multer/multer');
+const { ErrorHandler } = require('../../helpers/error_handle/error_handle')
+const { upload_single } = require('../../multer/multer');
 const { statusUser } = require('../../helpers/error_handle/status_code');
 
 
@@ -156,18 +156,69 @@ module.exports.uploadAvatar = async (req, res, next) => {
         .then(
             async (avatar) => {
                 await userModel.uploadAvatarUser(id, avatar.filename)
-                    .then( results =>{
-                        res.json(new messageSuccessResponse(statusUser.successUploadIamge))
+                    .then(results => {
+                        console.log(avatar);
+                        res.json(
+                            new successResponse({ filename: avatar.filename }, statusUser.successUploadIamge.message
+                            ))
                     })
                     .catch(err =>
                         next(err)
                     )
-               
-              
             }
         )
         .catch(
             err => next(err)
+        )
+}
+module.exports.joinEvent = async (req, res, next) => {
+    const user_id = req.user.id;
+    console.log(user_id);
+    const { event_id } = req.body;
+    console.log(event_id);
+    userModel.getEventById(event_id)  // kiem tra xem co event nay` k
+        .then(results => {
+            if (results[0].length > 0) {
+                userModel.getUserEventByUserIdEventId(user_id, event_id) //kiem tra xem da join chuwa
+                    .then(results => {
+                        console.log(results);
+                        if (results[0].length == 0) {
+                            userModel.joinEventUser(user_id, event_id)
+                                .then(results => {
+                                    res.json(new messageSuccessResponse(statusUser.joinEvent))
+                                })
+                                .catch(err => {
+                                    next(err)
+                                })
+                        }
+                        else {
+                            next(new ErrorHandler(statusUser.errorJoinEvent))
+                        }
+
+                    })
+                    .catch(err =>
+                        next(err))
+            }
+            else {
+                next(new ErrorHandler(statusUser.eventNotValid))
+            }
+        })
+        .catch(err =>
+            next(err))
+
+
+
+}
+module.exports.getAllEventJoined = async (req, res, next) => {
+    const { id } = req.user;
+    await userModel.getAllEventJoined(id)
+        .then(results => {
+            console.log(results);
+            const event_joined = results[0];
+            res.json(new successResponse(event_joined))
+        })
+        .catch(err =>
+            next(err)
         )
 }
 

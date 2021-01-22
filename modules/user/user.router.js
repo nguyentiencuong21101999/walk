@@ -33,4 +33,14 @@ authUser.validateUploadAvatar,
 authJwt.verifyAccessToken,
 controller.uploadAvatar
 )
+
+router.post('/join-event',
+authUser.validateJoinEvent,
+authJwt.verifyAccessToken,
+controller.joinEvent)
+
+router.get('/get-all-event-joined',
+authJwt.verifyAccessToken,
+controller.getAllEventJoined
+)
 module.exports = router;
