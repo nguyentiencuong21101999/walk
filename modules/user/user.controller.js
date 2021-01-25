@@ -174,7 +174,7 @@ module.exports.uploadAvatar = async (req, res, next) => {
 module.exports.joinEvent = async (req, res, next) => {
     const user_id = req.user.id;
     console.log(user_id);
-    const { event_id } = req.body;
+    const { event_id } = req.params;
     console.log(event_id);
     userModel.getEventById(event_id)  // kiem tra xem co event nay` k
         .then(results => {

@@ -108,10 +108,10 @@ const validateUploadAvatar = (async (req, res, next) => {
 )
 const validateJoinEvent = ((req, res, next) => {
     try {
-        const schemaBody = joi.object({
+        const schemaParams = joi.object({
             event_id: joi.number().integer().required()
         })
-        const validateBody = schemaBody.validate(req.body)
+        const validateBody = schemaParams.validate(req.params)
         validate(validateBody)
         next()
     }

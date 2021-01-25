@@ -11,4 +11,22 @@ authJwt.verifyAccessToken,
 controller.addActivity
 )
 
+router.get("/get-activity-by-day",
+authJwt.verifyAccessToken,
+controller.getActivityByDay
+)
+router.get("/get-activity-by-week",
+authJwt.verifyAccessToken,
+controller.getActivityByWeek)
+
+router.get("/get-activity-by-month",
+authJwt.verifyAccessToken,
+controller.getActivityByMonth
+)
+
+router.get("/get-activity-by-event/:event_id",
+authActivity.validateGetActivityByEvent,
+authJwt.verifyAccessToken,
+controller.getActivityByEvent
+)
 module.exports = router;

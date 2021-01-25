@@ -24,17 +24,19 @@ const { handleError } = require('./helpers/error_handle/error_handle')
 const userRouter = require("./modules/user/user.router")
 const eventRouter = require("./modules/event/event.router")
 const activityRouter = require("./modules/activity/activity.router")
-const roleRouter = require("./modules/role/role.router")
+const rankRouter = require("./modules/rank/rank.router");
+const roleRouter = require("./modules/role/role.router");
+
 
 app.use('/user', userRouter);
 app.use('/event',eventRouter)
-app.use('/activity',activityRouter)
+app.use('/activity',activityRouter);
 app.use('/role', roleRouter);
-
+app.use('/rank',rankRouter);
 app.use((err, req, res, next) => {
   handleError(err, res);
 });
-console.log(new Date());
+
 server.listen(PORT, function () {
   console.log(' App listening on port ' + PORT + "...");
 });

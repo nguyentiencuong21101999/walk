@@ -100,11 +100,17 @@ const statusEvent = {
     }
    
 }
+const statusActivity = {
+    errorJoin:{
+        message:"Users is not join Event"
+    }
+}
 module.exports = {
     statusError,
     statusJwt,
     statusMulter,
     statusUser,
-    statusEvent
+    statusEvent,
+    statusActivity
 };
 

@@ -34,7 +34,7 @@ authJwt.verifyAccessToken,
 controller.uploadAvatar
 )
 
-router.post('/join-event',
+router.post('/join-event/:event_id',
 authUser.validateJoinEvent,
 authJwt.verifyAccessToken,
 controller.joinEvent)

@@ -1,8 +1,5 @@
 const joi = require("joi")
 const validate = require('../../helpers/validate_joi/validate_joi');
-var multiparty = require('multiparty');
-let form = new multiparty.Form();
-
 const validateAdd = async (req, res, next) => {
         try {
             const schemaHeaders = joi.object({

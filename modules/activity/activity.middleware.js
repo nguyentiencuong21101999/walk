@@ -17,6 +17,21 @@ const validateAdd =(req,res,next)=>{
 
 
 }
+
+
+const validateGetActivityByEvent = (req,res,next) =>{
+    try{
+        const schemaParams = joi.object({
+            event_id:joi.number().integer().required()
+        })
+        const validateBody = schemaParams.validate(req.params)
+        validate(validateBody)
+        next()
+    }catch(err){
+        next(err)
+    }
+}
 module.exports = {
-    validateAdd
+    validateAdd,
+    validateGetActivityByEvent
 };
