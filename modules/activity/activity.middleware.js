@@ -14,11 +14,7 @@ const validateAdd =(req,res,next)=>{
     }catch(err){
         next(err)
     }
-
-
 }
-
-
 const validateGetActivityByEvent = (req,res,next) =>{
     try{
         const schemaParams = joi.object({

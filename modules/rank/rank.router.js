@@ -7,19 +7,13 @@ router.get('/get-rank-by-day',
 authJwt.verifyAccessToken,
 controller.getRankByDay
 )
-
 router.get('/get-rank-by-month',
 authJwt.verifyAccessToken,
 controller.getRankByMonth
 )
-
 router.get('/get-rank-by-event/:event_id',
 authJwt.verifyAccessToken,
 authRank.validateGetRankByEvent,
 controller.getRankByEvent
 )
-
-
-
-
 module.exports = router;

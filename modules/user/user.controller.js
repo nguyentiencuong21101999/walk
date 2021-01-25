@@ -137,8 +137,7 @@ module.exports.refreshToken = async (req, res) => {
         newToken: generators.token,
         newRefreshToken: generators.refreshToken
     }
-    // console.log(data);
-    res.send(data)
+    res.json(new successResponse(data));
 }
 module.exports.signout = async (req, res) => {
     const { refreshToken } = req.body;
@@ -194,7 +193,6 @@ module.exports.joinEvent = async (req, res, next) => {
                         else {
                             next(new ErrorHandler(statusUser.errorJoinEvent))
                         }
-
                     })
                     .catch(err =>
                         next(err))
@@ -205,9 +203,6 @@ module.exports.joinEvent = async (req, res, next) => {
         })
         .catch(err =>
             next(err))
-
-
-
 }
 module.exports.getAllEventJoined = async (req, res, next) => {
     const { id } = req.user;

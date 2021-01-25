@@ -5,7 +5,6 @@ const validateGetRankByEvent = (req, res, next) => {
         const schemaParams = joi.object({
             event_id: joi.number().integer().required()
         })
-
         const validateHeaders = schemaParams.validate(req.params)
         validate(validateHeaders)
         next()

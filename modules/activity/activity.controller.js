@@ -21,8 +21,6 @@ module.exports.addActivity = (req, res, next) => {
                             const element_time_begin = new Date(element.time_begin).getTime();
                             const element_time_end = new Date(element.time_end).getTime();
                             const time_join = new Date(element.time_join).getTime();
-                            console.log(time_begins);
-                            console.log(time_join);
                             if (time_begins > time_join && time_begins > element_time_begin && time_ends < element_time_end) {
                                 console.log(element.event_id);
                                 console.log(activity_id);

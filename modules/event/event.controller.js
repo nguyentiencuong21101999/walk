@@ -4,9 +4,7 @@ const { upload_single_formdata, upload_single } = require('../../multer/multer')
 const eventModel = require('./event.model');
 
 module.exports.add = (req, res, next) => {
-
     const { name, detail_event, time_begin, time_end, steps_finish, point } = req.body;
-
     eventModel.addEvent(name, detail_event, time_begin, time_end, steps_finish, point)
         .then(results => {
             const event_id = results[0];

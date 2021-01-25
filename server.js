@@ -31,8 +31,9 @@ const roleRouter = require("./modules/role/role.router");
 app.use('/user', userRouter);
 app.use('/event',eventRouter)
 app.use('/activity',activityRouter);
-app.use('/role', roleRouter);
 app.use('/rank',rankRouter);
+app.use('/role', roleRouter);
+
 app.use((err, req, res, next) => {
   handleError(err, res);
 });

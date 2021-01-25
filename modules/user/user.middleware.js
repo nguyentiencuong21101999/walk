@@ -1,7 +1,6 @@
 const joi = require('joi')
 const validate = require('../../helpers/validate_joi/validate_joi');
 const validateGetUserByEmail = (req, res, next) => {
-
     try {
         const schema = joi.object({
             email: joi.string().lowercase().email().required()
@@ -12,8 +11,6 @@ const validateGetUserByEmail = (req, res, next) => {
     } catch (err) {
         next(err)
     }
-
-
 }
 const validateSignin = async (req, res, next) => {
     try {
@@ -28,7 +25,6 @@ const validateSignin = async (req, res, next) => {
     } catch (err) {
         next(err)
     }
-
 }
 
 const validateSingup = async (req, res, next) => {
@@ -119,7 +115,6 @@ const validateJoinEvent = ((req, res, next) => {
         next(err)
     }
 })
-
 module.exports = {
     validateGetUserByEmail,
     validateSignin,

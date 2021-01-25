@@ -10,12 +10,9 @@ const validateAdd = async (req, res, next) => {
                 steps_finish: joi.number().integer().required(),
                 point: joi.number().integer().required(),
             })
-              
             const validateHeaders = schemaHeaders.validate(req.body)
             validate(validateHeaders)
-            
             next()
-
         } catch (err) {
             next(err)
         }
@@ -35,8 +32,6 @@ const validateUploadImageEvent = (req,res,next) =>{
         next(err)
     }
 }
-
-
 module.exports = {
     validateAdd,
     validateUploadImageEvent
