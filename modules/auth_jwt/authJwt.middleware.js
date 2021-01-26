@@ -95,7 +95,6 @@ const verifyRefreshToken = async (req, res, next) => {
         const { refreshToken } = req.body;
         //if validateTken  return false <=> khong cos tren redis
         const isValid = await validateToken(refreshToken, authJwtType.refreshToken.key)
-        console.log(isValid); 
         if (!isValid) {
             throw new ErrorHandler(statusJwt.isValidRefreshToken)
         } else {

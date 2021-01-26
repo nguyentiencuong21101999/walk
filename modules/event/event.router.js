@@ -18,6 +18,10 @@ router.post('/get-all-event',
 authJwt.verifyAccessToken,
 controller.getAllEvent
 )
+router.post('/join/:event_id',
+authEvent.validateJoinEvent,
+authJwt.verifyAccessToken,
+controller.joinEvent)
 
 
 module.exports = router;

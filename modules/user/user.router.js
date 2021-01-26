@@ -26,6 +26,7 @@ controller.refreshToken
 router.post('/signout',
 authUser.validateSignout,
 authJwt.checkAccessToken,
+authJwt.verifyRefreshToken,
 controller.signout)
 
 router.post('/upload-avatar',

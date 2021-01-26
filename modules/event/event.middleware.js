@@ -32,7 +32,21 @@ const validateUploadImageEvent = (req,res,next) =>{
         next(err)
     }
 }
+const validateJoinEvent = ((req, res, next) => {
+    try {
+        const schemaParams = joi.object({
+            event_id: joi.number().integer().required()
+        })
+        const validateBody = schemaParams.validate(req.params)
+        validate(validateBody)
+        next()
+    }
+    catch (err) {
+        next(err)
+    }
+})
 module.exports = {
     validateAdd,
-    validateUploadImageEvent
+    validateUploadImageEvent,
+    validateJoinEvent
 }

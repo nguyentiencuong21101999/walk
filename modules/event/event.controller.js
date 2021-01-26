@@ -18,7 +18,6 @@ module.exports.uploadImageEvent = (req, res, next) => {
     const { id } = req.params;
     upload_single("fileImage", req, res, next)
         .then(image => {
-            console.log(image);
             eventModel.uploadImageEvent(id, image.filename)
                 .then(results => {
                     const event = results[0];
@@ -31,6 +30,37 @@ module.exports.uploadImageEvent = (req, res, next) => {
         .catch(err => {
             next(err)
         })
+}
+module.exports.joinEvent = async (req, res, next) => {
+    const user_id = req.user.id;
+    const { event_id } = req.params;
+    userModel.getEventById(event_id)  // kiem tra xem co event nay` k
+        .then(results => {
+            if (results[0].length > 0) {
+                userModel.getUserEventByUserIdEventId(user_id, event_id) //kiem tra xem da join chuwa
+                    .then(results => {
+                        if (results[0].length == 0) {
+                            userModel.joinEventUser(user_id, event_id)
+                                .then(results => {
+                                    res.json(new messageSuccessResponse(statusUser.joinEvent))
+                                })
+                                .catch(err => {
+                                    next(err)
+                                })
+                        }
+                        else {
+                            next(new ErrorHandler(statusUser.errorJoinEvent))
+                        }
+                    })
+                    .catch(err =>
+                        next(err))
+            }
+            else {
+                next(new ErrorHandler(statusUser.eventNotValid))
+            }
+        })
+        .catch(err =>
+            next(err))
 }
 
 module.exports.getAllEvent = (req, res, next) => {

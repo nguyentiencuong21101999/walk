@@ -1,11 +1,17 @@
-
-const procedure = require('../../database/query/db.query')
+const statusUser = require('../../helpers/error_handle/status_code')
+const procedure = require('../../database/query/db.query');
+const { ErrorHandler } = require('../../helpers/error_handle/error_handle');
 const user = {};
 user.getInfoById = (id) =>{
    return procedure.sproc("get_info_by_id",[id]);
 }
-user.getUserByEmail = (email) => {
-   return procedure.sproc("get_user_by_email", [email])
+user.getUserByEmail = async(email) => {
+   try {
+      const results = await procedure.sproc("get_user_by_emails", [email])
+      return results;   
+   } catch (err) {
+     throw new ErrorHandler(err) 
+   }
 }
 user.insertUser = (email, password, firstname, lastname, birthday, gender, phone, address_name,ward, district, province) => {
    return procedure.sproc("insert_user", [email, password, firstname, lastname, birthday, gender, phone,address_name, ward, district, province]);

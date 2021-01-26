@@ -71,17 +71,11 @@ const validateRefreshToken = async (req, res, next) => {
     }
 }
 const validateSignout = (async (req, res, next) => {
-    const { authorization } = req.headers;
     try {
-        const schemaHeaders = joi.object({
-            authorization: joi.string().required()
-        })
         const schemaBody = joi.object({
             refreshToken: joi.string().required()
         })
-        const validateHeaders = schemaHeaders.validate({ authorization: authorization })
         const validateBody = schemaBody.validate(req.body)
-        validate(validateHeaders)
         validate(validateBody)
         next()
     } catch (err) {

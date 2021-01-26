@@ -14,7 +14,6 @@ const { statusUser } = require('../../helpers/error_handle/status_code');
 
 module.exports.getUserByEmail = async (req, res, next) => {
     const results = await userModel.getAllAddress();
-    console.log(results[0]);
     res.send(results[2])
     // const { email } = req.body;
     // //  const results = await userModel.getUserByEmail(email)
@@ -24,50 +23,57 @@ module.exports.getUserByEmail = async (req, res, next) => {
     // }
     // res.json(new successResponse(results[0]))
 }
+
 module.exports.signin = async (req, res, next) => {
     const { email, password } = req.body;
-    userModel.getUserByEmail(email)
-        .then(async results => {
-            let info = {};
-            results[0].map((value, key) => {
-                info = value
-            })
-            const user = {
-                id: info.user_id,
-                role: info.role
-            }
-            const compare = await bcrypt.comparePassword(password, info.password)
+    try {
+        const results = await userModel.getUserByEmail(email)
+        console.log(results);
+    } catch (err) {
+        next(err) 
+    }
+    // const { email, password } = req.body;
+    // userModel.getUserByEmail(email)
+    //     .then(async results => {
+    //         let info = {};
+    //         results[0].map((value, key) => {
+    //             info = value
+    //         })
+    //         const user = {
+    //             id: info.user_id,
+    //             role: info.role
+    //         }
+    //         const compare = await bcrypt.comparePassword(password, info.password)
+    //         if (compare === true) {
+    //             const generator = authJwt.generatorToken(user)
+    //             let info_address = []
+    //             await userModel.getInfoById(user.id)
+    //                 .then(results => {
 
-            if (compare === true) {
-                const generator = authJwt.generatorToken(user)
-                let info_address = []
-                await userModel.getInfoById(user.id)
-                    .then(results => {
+    //                     const user_info = results[0];
+    //                     const address = results[1];
+    //                     user_info[0].address = address[0]
+    //                     info_address = user_info[0]
+    //                 })
+    //                 .catch(err =>
+    //                     next(err)
+    //                 )
+    //             //store refreshToken
+    //             authJwt.storeToken(generator.token, authJwtType.accessToken.key)
+    //             authJwt.storeToken(generator.refreshToken, authJwtType.refreshToken.key)
+    //             res.json({
+    //                 info: info_address,
+    //                 accessToken: generator.token,
+    //                 refreshToken: generator.refreshToken,
+    //             })
 
-                        const user_info = results[0];
-                        const address = results[1];
-                        user_info[0].address = address[0]
-                        info_address = user_info[0]
-                    })
-                    .catch(err =>
-                        next(err)
-                    )
-                //store refreshToken
-                authJwt.storeToken(generator.token, authJwtType.accessToken.key)
-                authJwt.storeToken(generator.refreshToken, authJwtType.refreshToken.key)
-                res.json({
-                    info: info_address,
-                    accessToken: generator.token,
-                    refreshToken: generator.refreshToken,
-                })
-
-            } else {
-                res.json(new ErrorHandler(statusUser.passwordIsNotValid))
-            }
-        })
-        .catch(err =>
-            next(err)
-        )
+    //         } else {
+    //             res.json(new ErrorHandler(statusUser.passwordIsNotValid))
+    //         }
+    //     })
+    //     .catch(err =>
+    //         next(err)
+    //     )
 
     // console.log(results);
 
@@ -156,7 +162,6 @@ module.exports.uploadAvatar = async (req, res, next) => {
             async (avatar) => {
                 await userModel.uploadAvatarUser(id, avatar.filename)
                     .then(results => {
-                        console.log(avatar);
                         res.json(
                             new successResponse({ filename: avatar.filename }, statusUser.successUploadIamge.message
                             ))
@@ -172,15 +177,12 @@ module.exports.uploadAvatar = async (req, res, next) => {
 }
 module.exports.joinEvent = async (req, res, next) => {
     const user_id = req.user.id;
-    console.log(user_id);
     const { event_id } = req.params;
-    console.log(event_id);
     userModel.getEventById(event_id)  // kiem tra xem co event nay` k
         .then(results => {
             if (results[0].length > 0) {
                 userModel.getUserEventByUserIdEventId(user_id, event_id) //kiem tra xem da join chuwa
                     .then(results => {
-                        console.log(results);
                         if (results[0].length == 0) {
                             userModel.joinEventUser(user_id, event_id)
                                 .then(results => {
@@ -208,7 +210,6 @@ module.exports.getAllEventJoined = async (req, res, next) => {
     const { id } = req.user;
     await userModel.getAllEventJoined(id)
         .then(results => {
-            console.log(results);
             const event_joined = results[0];
             res.json(new successResponse(event_joined))
         })
