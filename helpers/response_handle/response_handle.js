@@ -9,6 +9,7 @@ class successResponse {
 class messageSuccessResponse {
     constructor(success) {
         this.status = "success";
+        this.code =success.code,
         this.message = success.message;
     }
 }

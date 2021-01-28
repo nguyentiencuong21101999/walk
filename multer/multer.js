@@ -26,7 +26,7 @@ const upload_single = (file_name, req, res, next) => {
                     next(err)
                 } else {
                     if (!req.file) {
-                        next(new ErrorHandler(statusMulter.chooseFile))
+                        next(new ErrorHandler(statusMulter.ChooseFile))
                     }
                     resolve(req.file)
                 }

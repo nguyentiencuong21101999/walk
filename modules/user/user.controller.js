@@ -8,6 +8,7 @@ const generator = require('../auth_jwt/authJwt.middleware');
 const { ErrorHandler } = require('../../helpers/error_handle/error_handle')
 const { upload_single } = require('../../multer/multer');
 const { statusUser } = require('../../helpers/error_handle/status_code');
+const user = require('./user.model');
 
 
 
@@ -27,7 +28,7 @@ module.exports.getUserByEmail = async (req, res, next) => {
 module.exports.signin = async (req, res, next) => {
     const { email, password } = req.body;
     try {
-        const results = await userModel.getProfileByEmail(email);
+        const results = await userModel.getProfile(email);
         const users = results[0]
         const info = results[1]
         const compare = await bcrypt.comparePassword(password, users[0].password)
@@ -57,7 +58,7 @@ module.exports.signup = async (req, res, next) => {
         const hash = await bcrypt.hashPassword(password);
         const results = await userModel.insertUser(email, hash, firstname, lastname, birthday, gender, phone, address_name, ward, district, province)
         const users = results[0]
-        const info = results[1] 
+        const info = results[1]
         const user = {
             id: users[0].user_id,
             role: users[0].role
@@ -72,7 +73,6 @@ module.exports.signup = async (req, res, next) => {
             refreshToken: generator.refreshToken,
         }))
     } catch (err) {
-        console.log(err);
         next(err)
     }
 }
@@ -104,56 +104,17 @@ module.exports.signout = async (req, res) => {
 }
 
 module.exports.uploadAvatar = async (req, res, next) => {
-    const  user_id  = req.user.id;
-    await upload_single("fileImage", req, res, next)
-        .then(
-            async (avatar) => {
-                await userModel.uploadAvatarUser(id, avatar.filename)
-                    .then(results => {
-                        res.json(
-                            new successResponse({ filename: avatar.filename }, statusUser.successUploadIamge.message
-                            ))
-                    })
-                    .catch(err =>
-                        next(err)
-                    )
-            }
-        )
-        .catch(
-            err => next(err)
-        )
-}
-module.exports.joinEvent = async (req, res, next) => {
     const user_id = req.user.id;
-    const { event_id } = req.params;
-    userModel.getEventById(event_id)  // kiem tra xem co event nay` k
-        .then(results => {
-            if (results[0].length > 0) {
-                userModel.getUserEventByUserIdEventId(user_id, event_id) //kiem tra xem da join chuwa
-                    .then(results => {
-                        if (results[0].length == 0) {
-                            userModel.joinEventUser(user_id, event_id)
-                                .then(results => {
-                                    res.json(new messageSuccessResponse(statusUser.joinEvent))
-                                })
-                                .catch(err => {
-                                    next(err)
-                                })
-                        }
-                        else {
-                            next(new ErrorHandler(statusUser.errorJoinEvent))
-                        }
-                    })
-                    .catch(err =>
-                        next(err))
-            }
-            else {
-                next(new ErrorHandler(statusUser.eventNotValid))
-            }
-        })
-        .catch(err =>
-            next(err))
+    try {
+        const avatar = await upload_single("fileImage", req, res, next)
+        const filename = avatar.filename;
+        const results = await userModel.uploadAvatar(user_id, filename);
+        res.json(new successResponse(results[0]))
+    } catch (err) {;
+        next(err)
+    }
 }
+
 module.exports.getAllEventJoined = async (req, res, next) => {
     const { id } = req.user;
     await userModel.getAllEventJoined(id)

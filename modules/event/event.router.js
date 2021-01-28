@@ -9,14 +9,17 @@ authEvent.validateAdd,
 authJwt.verifyAccessToken,
 controller.add)
 
-router.post('/upload-image-event/:id',
-    authEvent.validateUploadImageEvent,
+router.post('/upload-image/:event_id',
+    authEvent.validateUploadImage,
     authJwt.verifyAccessToken,
-    controller.uploadImageEvent
+    controller.uploadImage
 )
-router.post('/get-all-event',
-authJwt.verifyAccessToken,
-controller.getAllEvent
+router.get('/:event_id',
+authEvent.validateJoinEvent,
+controller.EventById
+)
+router.post('/all',
+controller.allEvent
 )
 router.post('/join/:event_id',
 authEvent.validateJoinEvent,

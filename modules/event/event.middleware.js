@@ -5,8 +5,8 @@ const validateAdd = async (req, res, next) => {
             const schemaHeaders = joi.object({
                 name: joi.string().required(),
                 detail_event: joi.string().required(),
-                time_begin: joi.date().min(new Date()).iso().required(),
-                time_end: joi.date().min(new Date()).iso().required(),
+                time_begin: joi.date().iso().required(),
+                time_end: joi.date().iso().required(),
                 steps_finish: joi.number().integer().required(),
                 point: joi.number().integer().required(),
             })
@@ -17,10 +17,10 @@ const validateAdd = async (req, res, next) => {
             next(err)
         }
 }
-const validateUploadImageEvent = (req,res,next) =>{
+const validateUploadImage = (req,res,next) =>{
     try {
         const schemaPrams = joi.object({
-           id:joi.number().integer().required()
+           event_id:joi.number().integer().required()
         })
           
         const validateHeaders = schemaPrams.validate(req.params)
@@ -47,6 +47,6 @@ const validateJoinEvent = ((req, res, next) => {
 })
 module.exports = {
     validateAdd,
-    validateUploadImageEvent,
+    validateUploadImage,
     validateJoinEvent
 }

@@ -53,11 +53,11 @@ const statusMulter = {
         code: 403,
         message: "upload fail!"
     },
-    isOnlyIamge: {
+    IsOnlyImage: {
         code: 403,
         message: "Only image are allowed!"
     },
-    chooseFile: {
+    ChooseFile: {
         code: 403,
         message: "Select at least one file to upload!"
     }
@@ -69,6 +69,16 @@ const statusUser = {
         message: " Password is not valid."
     }
     ,
+    //logout
+    successLogout :{
+        code:200,
+        message:"logout success ..."
+    },
+
+
+}
+const statusErrorMysql = {
+    //User
     EmailExist:{
         code: 403,
         message: "Email exits!"
@@ -78,36 +88,26 @@ const statusUser = {
         code:403,
         message: " Email not valid!"
     },
-    //join
-    errorJoinEvent:{
-        message:"Event Joined!"
-    },
-    joinEvent:{
-        code:200,
-        message:"Join Event Success ..."
-    },
-    eventNotValid:{
+    UserIdIsNotValid:{
         code:403,
-        message:"Event is not valid!"
+        message: "Id is not valid!"
     },
-    //logout
-    successLogout :{
-        code:200,
-        message:"logout success ..."
+    //Event
+    JoinFail:{
+        code: 403,
+        message: "Event Joined!"
     },
-    //uploadImage
-    successUploadIamge : {
-        code:200,
-        message:"upload avatar success ..."
+    EventIsNotValid:{
+        code:403,
+        message:"Event is not vaid!"
     }
-
-
 }
 const statusEvent = {
-    //Success
-    addEvent:{
-        message:"Add success ..."
-    }
+   Joined:{
+       code:200,
+       message:"Join success ..."
+   }
+
    
 }
 const statusActivity = {
@@ -121,6 +121,7 @@ module.exports = {
     statusMulter,
     statusUser,
     statusEvent,
-    statusActivity
+    statusActivity,
+    statusErrorMysql
 };
 

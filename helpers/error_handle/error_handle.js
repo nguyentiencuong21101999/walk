@@ -1,5 +1,5 @@
-const { statusUser } = require("./status_code");
-
+const { statusUser, statusEvent, statusErrorMysql } = require("./status_code");
+//Custom Error
 class ErrorHandler extends Error {
   constructor(error) {
     super();
@@ -14,29 +14,13 @@ class ErrorCodeHandler {
     this.message = message;
   }
 }
-// const handleError = (err, res) => {
-//   let object = {
-//     status: "error",
-//     code: err.code,
-//     message: err.message,
-//   }
-//   res.send(object)
-// };
-
+//MySql Error
 const handleError = (reqErr, res) => {
   const err = parseSQLExceptionIfNeeded(reqErr)
   let { message } = err
   const { code, status } = err
   
-  // // hide sensitive details error in production when thrown by Error
-  // // if ((config.env.current === config.env.production
-  // // && !(err instanceof ErrorHandler)) || !message) {
-  // // message = ErrorCode.Sensitive.message
-  // // }
-  
-  res
-  // .status(status || ErrorCode.BadRequest.statusCode)
-  .send({
+  res.json({
   status: 'error',
   code,
   message
@@ -45,9 +29,6 @@ const handleError = (reqErr, res) => {
  }
 
 const parseSQLExceptionIfNeeded = (err) => {
-  console.log('====================================');
-  console.log(err);
-  console.log('====================================');
   const { 
     code
     ,sqlMessage
@@ -56,11 +37,11 @@ const parseSQLExceptionIfNeeded = (err) => {
   if (code !== 'ER_SIGNAL_EXCEPTION') {
   return err
   }
-  if (sqlMessage in statusUser) {
-  return new ErrorHandler(statusUser[sqlMessage])
+  if (sqlMessage in statusErrorMysql ) {
+  return new ErrorHandler(statusErrorMysql[sqlMessage])
   }
   
-  return new ErrorHandler(statusUser.isValidEmail)
+  return new ErrorHandler(sqlMessage.EmailExist)
 }
 module.exports = {
   ErrorHandler,

@@ -16,7 +16,7 @@ const PORT = process.env.PORT;
 var multer  = require('multer');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json())
-
+console.log( new Date('2021-10-21 17:05:50'));
 require('./database/connection/db.connection')
 
 //mullter
@@ -26,6 +26,7 @@ const eventRouter = require("./modules/event/event.router")
 const activityRouter = require("./modules/activity/activity.router")
 const rankRouter = require("./modules/rank/rank.router");
 const roleRouter = require("./modules/role/role.router");
+const { date } = require('joi');
 
 
 app.use('/user', userRouter);

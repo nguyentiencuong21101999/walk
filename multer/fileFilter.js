@@ -10,7 +10,7 @@ const fileFIlter_image = function (req, file, cb) {
     ) {
         cb(null, true)
     } else {
-        cb(new ErrorHandler(statusMulter.isOnlyIamge))
+        cb(new ErrorHandler(statusMulter.IsOnlyImage))
     }
 }
 
