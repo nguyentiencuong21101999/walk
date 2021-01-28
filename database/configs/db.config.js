@@ -1,10 +1,15 @@
 
 var DB_CONFIG = {
+  
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
-  password: null,
+  password: process.env.PASSWORD,
   database: process.env.DB_DATABASE,
+
 }
+
+  
+  // }
 //  db_Host
 // var DB_CONFIG = {
 //   host     : 'sql9.freemysqlhosting.net',

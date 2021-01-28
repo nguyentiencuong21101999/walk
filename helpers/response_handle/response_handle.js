@@ -2,7 +2,7 @@ class successResponse {
     constructor(data, message) {
         this.status = "success"
         this.data = data;
-        this.message = message ? message : null;
+        this.message = message;
     }
 
 }

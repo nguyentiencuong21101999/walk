@@ -35,6 +35,7 @@ app.use('/rank',rankRouter);
 app.use('/role', roleRouter);
 
 app.use((err, req, res, next) => {
+  console.log(err);
   handleError(err, res);
 });
 

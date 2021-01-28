@@ -23,6 +23,7 @@ const statusError = {
         code: 404,
         message: "Not Found "
     }
+
 }
 const statusJwt = {
     decodeFails: {
@@ -63,31 +64,40 @@ const statusMulter = {
 }
 const statusUser = {
     //error
-    passwordIsNotValid:{
+    PasswordIsNotValid:{
         code: 403,
-        message: "email or password is not valid."
+        message: " Password is not valid."
     }
     ,
-    emailExits:{
+    EmailExist:{
         code: 403,
-        message: "email exits!"
+        message: "Email exits!"
+    },
+    
+    EmailIsNotValid :{
+        code:403,
+        message: " Email not valid!"
     },
     //join
     errorJoinEvent:{
         message:"Event Joined!"
     },
     joinEvent:{
+        code:200,
         message:"Join Event Success ..."
     },
     eventNotValid:{
+        code:403,
         message:"Event is not valid!"
     },
     //logout
     successLogout :{
+        code:200,
         message:"logout success ..."
     },
     //uploadImage
     successUploadIamge : {
+        code:200,
         message:"upload avatar success ..."
     }
 

@@ -35,13 +35,9 @@ const queryProc = (query) => {
 
 
 const sproc = async (procName, params) => {
-    try {
         const query = `CALL ${procName}(${escapeParams(params)})`
         const results = await queryProc(query)
         return results;
-    } catch (err) {
-        throw new ErrorHandler(err )
-    }
 }
 
 /** Escape an untrusted string to be used as a SQL value. */
