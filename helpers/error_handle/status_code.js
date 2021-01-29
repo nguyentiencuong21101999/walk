@@ -99,7 +99,7 @@ const statusErrorMysql = {
     },
     EventIsNotValid:{
         code:403,
-        message:"Event is not vaid!"
+        message:"Event is not valid!"
     }
 }
 const statusEvent = {

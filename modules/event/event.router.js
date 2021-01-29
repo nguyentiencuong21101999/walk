@@ -18,7 +18,7 @@ router.get('/:event_id',
 authEvent.validateJoinEvent,
 controller.EventById
 )
-router.post('/all',
+router.get('/all',
 controller.allEvent
 )
 router.post('/join/:event_id',
@@ -26,5 +26,9 @@ authEvent.validateJoinEvent,
 authJwt.verifyAccessToken,
 controller.joinEvent)
 
+router.post('/joined',
+authJwt.verifyAccessToken,
+controller.eventJoined
+)
 
 module.exports = router;

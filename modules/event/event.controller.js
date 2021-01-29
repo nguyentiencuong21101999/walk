@@ -47,3 +47,12 @@ module.exports.allEvent = async (req, res, next) => {
         next(err)
     }
 }
+module.exports.eventJoined =async (req,res,next) =>{
+    const user_id = req.user.id;
+    try {
+        const results = await eventModel.eventJoined(user_id);
+        res.json(new successResponse(results))
+    } catch (err) {
+        next(err)
+    }
+}

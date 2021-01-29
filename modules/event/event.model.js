@@ -40,5 +40,9 @@ event.eventById = async(event_id) =>{
         return results[0];
     }
 }
+event.eventJoined = async(user_id) =>{
+    const results = await procedure.sproc("get_event_joined",[user_id])
+   return results[0];
+}
 
 module.exports = event;
