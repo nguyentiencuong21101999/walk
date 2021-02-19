@@ -100,6 +100,11 @@ const statusErrorMysql = {
     EventIsNotValid:{
         code:403,
         message:"Event is not valid!"
+    },
+    //activity
+    TypeIsNotValid:{
+        code:403,
+        message:"Type is not valid!"
     }
 }
 const statusEvent = {
@@ -111,9 +116,19 @@ const statusEvent = {
    
 }
 const statusActivity = {
-    errorJoin:{
-        message:"Users is not join Event"
-    }
+    ErrorGetActivity:{
+        code:403,
+        message:" Users is not activity!"
+    },
+    ErrorGetJoined:{
+        code:403,
+        message:"Users is not join Event! "
+    },
+    AddActivitySuccess:{
+        code:200,
+        message:"add activity success ..."
+    },
+
 }
 module.exports = {
     statusError,
