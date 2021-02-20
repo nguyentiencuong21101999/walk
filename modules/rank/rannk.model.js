@@ -1,12 +1,29 @@
 const procedure = require('../../database/query/db.query')
 const rank = {}
-rank.getRankByDay = () =>{
-    return procedure.sproc('get_rank_by_day',[]);
+rank.getRank = async (
+    type,
+    limit,
+    offset) => {
+    const values = [
+        type,
+        limit,
+        offset
+    ]
+    
+    const results = await procedure.sproc('get_rank',values)
+    return results[0]
 }
-rank.getRankByMonth = () =>{
-    return procedure.sproc('get_rank_by_month',[]);
-}
-rank.getRankByEvent = (event_id) =>{
-    return procedure.sproc('get_rank_by_event',[event_id]);
+
+rank.getRankByEvent = async(
+    event_id,
+    limit,
+    offset) => {
+        const values = [
+            event_id,
+            limit,
+            offset
+        ]
+    const results = await procedure.sproc('get_rank_by_event',values);
+    return results[0]
 }
 module.exports = rank;
