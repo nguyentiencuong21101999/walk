@@ -1,0 +1,674 @@
+{
+	"info": {
+		"_postman_id": "e7b99b97-1c8e-4872-a540-c26e8f72cc67",
+		"name": "task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "http://localhost:4000/user/sigin",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"tiencuong@gmail.com\",\r\n    \"password\":\"tiencuong\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/user/signin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"user",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/user/signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"tienluc@gmail.com\",\r\n    \"password\" : \"tienluc\",\r\n    \"firstname\" :\"nguyen tien\",\r\n    \"lastname\" :\"luc\",\r\n    \"birthday\" :\"1999-10-21\",\r\n    \"gender\" :\"lady\",\r\n    \"phone\":\"0373631432\",\r\n    \"address_name\" : \"54c Duong so 4\",\r\n    \"ward\":26827,\r\n    \"district\":762,\r\n    \"province\":79\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/user/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/user/signout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsInJvbGUiOjEsImlhdCI6MTYwOTM3ODgwOCwiZXhwIjoxNjA5Mzc4ODM4fQ.IocyOJsgpY-91DclO3bQVl6-BM_1OK-O7owyybIQIeA\",\r\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsInJvbGUiOjEsImlhdCI6MTYwOTM3ODgwOCwiZXhwIjoxNjA5NDY1MjA4fQ.qLIJrhHrTVUFhBoAzK7JyBLR4BcAflvf8ohWxHtsN70\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/user/signout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"user",
+								"signout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/user/upload-avatar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE2LCJyb2xlIjoxLCJpYXQiOjE2MTEyODI1OTEsImV4cCI6MTYxMTM2ODk5MX0.6_Tfs8KRh6FIeSqLaAROtusLB5xzW5gNx1N4KqWUBU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "fileImage",
+									"type": "file",
+									"src": "/C:/Users/Tran Thu/Desktop/im-website/chat.PNG"
+								},
+								{
+									"key": "a",
+									"value": "adadads",
+									"contentType": "application/json",
+									"type": "text",
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/user/upload-avatar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"user",
+								"upload-avatar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/user/refreshToken",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refreshToken\":\"{{refreshToken}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/user/refreshToken",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"user",
+								"refreshToken"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "event",
+			"item": [
+				{
+					"name": "http://localhost:4000/event/add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"event chay bo\",\r\n    \"detail_event\" : \"abc\",\r\n    \"time_begin\":\"2021-02-22\",\r\n    \"time_end\" : \"2021-02-28\",\r\n    \"steps_finish\":\"1000\",\r\n    \"point\":\"100\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/event/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"event",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/event/upload-image/:event_id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"type": "text",
+								"value": "{{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "fileImage",
+									"type": "file",
+									"src": "/C:/Users/Tran Thu/Desktop/im-website/admin_chat.PNG"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4000/event/upload-image/30",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"event",
+								"upload-image",
+								"30"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/event/all",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{accessToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:4000/event/all?page=1 &limit=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"event",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1 "
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/event/join/:event_id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{accessToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:4000/event/join/30",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"event",
+								"join",
+								"30"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/event/:event_id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/event/31",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"event",
+								"31"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/event/joined",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{accessToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:4000/event/joined",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"event",
+								"joined"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "activity",
+			"item": [
+				{
+					"name": "http://localhost:4000/activity/add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"steps_number\":200,\r\n    \"time_begin\":\"2021-02-19 23:00:00\",\r\n    \"time_end\":\"2021-02-19 23:50:55\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/activity/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"activity",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/activity/get-activity?type=???",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{accessToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:4000/activity/get-activity?type=week",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"activity",
+								"get-activity"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "week"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/activity/get-activity-by-event/:event_id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{accessToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:4000/activity/get-activity-by-event/31",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"activity",
+								"get-activity-by-event",
+								"31"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "role",
+			"item": [
+				{
+					"name": "http://localhost:4000/role/client",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\" : \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjQsInJvbGUiOjIsImlhdCI6MTYwOTM4MDQ0MSwiZXhwIjoxNjA5MzgwNDcxfQ.oLoUW4MJYO1r9JH79jM4sbWGRheLsH63foxYtE6jvjA\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/role/client",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"role",
+								"client"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/role/admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\" : \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjQsInJvbGUiOjIsImlhdCI6MTYwOTkyNjU0OCwiZXhwIjoxNjEwMDEyOTQ4fQ.8wQN_SHkpQa-gqJme3yWYob_T1zQ8GtaxNOWGR7JIwg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/role/admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"role",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/user/upload_single",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "fileImage",
+									"type": "file",
+									"src": "/C:/Users/Tran Thu/Desktop/im-website/admin_chat.PNG"
+								},
+								{
+									"key": "fileImage",
+									"type": "file",
+									"src": "/C:/Users/Tran Thu/Desktop/im-website/admin.PNG"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4000/user/upload_single",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"user",
+								"upload_single"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/user/upload_multiple",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/user/upload_multiple",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"user",
+								"upload_multiple"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "rank",
+			"item": [
+				{
+					"name": "http://localhost:4000/rank/event/:event_id?page = ? & limit = ?",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE2LCJyb2xlIjoxLCJpYXQiOjE2MTE2NDk0MzUsImV4cCI6MTYxMTczNTgzNX0.mXWA7Y83rbDH-F6hRWk2UBT0eS3dAhk-agYXHyG3zig",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:4000/rank/event/31?page=1&limit=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"rank",
+								"event",
+								"31"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/rank?page=? & limit = ?",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/rank?type=month&page=2&limit= 2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"rank"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "month"
+								},
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "limit",
+									"value": " 2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
