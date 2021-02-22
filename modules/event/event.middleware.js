@@ -32,6 +32,21 @@ const validateUploadImage = (req,res,next) =>{
         next(err)
     }
 }
+const validateGetAllEvent = ((req, res, next) => {
+    try {
+        const schemaQuery = joi.object({
+            page: joi.number().integer().required(),
+            limit: joi.number().integer().required()
+        })
+        const validateBody = schemaQuery.validate(req.query)
+        validate(validateBody)
+        next()
+    }
+    catch (err) {
+        next(err)
+    }
+})
+
 const validateJoinEvent = ((req, res, next) => {
     try {
         const schemaParams = joi.object({
@@ -48,5 +63,6 @@ const validateJoinEvent = ((req, res, next) => {
 module.exports = {
     validateAdd,
     validateUploadImage,
+    validateGetAllEvent,
     validateJoinEvent
 }

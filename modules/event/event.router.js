@@ -18,7 +18,8 @@ router.get('/:event_id',
 authEvent.validateJoinEvent,
 controller.EventById
 )
-router.get('/all',
+router.post('/all',
+authEvent.validateGetAllEvent,
 controller.allEvent
 )
 router.post('/join/:event_id',

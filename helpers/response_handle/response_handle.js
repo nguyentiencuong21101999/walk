@@ -15,17 +15,17 @@ class messageSuccessResponse {
 }
 
 class pagination extends successResponse {
-    constructor(data, page, limit, total, message,) {
+    constructor(data, page, limit, message,) {
         super(data, message)
-        this.page = page,
-            this.limit = limit,
-            this.total = total
+            this.page = page,
+            this.limit = limit
+            //this.total = total
     }
     successPagination = () => {
         let successPage = {
             page: this.page,
             limit: this.limit,
-            total: this.total,
+            //total: this.total,
         }
         return [
             this.handleSuccessRes()

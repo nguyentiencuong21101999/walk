@@ -7,8 +7,8 @@ var DB_CONFIG = {
   database: process.env.DB_DATABASE,
 
 }
-
-  
+module.exports = DB_CONFIG;
+//#region 
   // }
 //  db_Host
 // var DB_CONFIG = {
@@ -17,4 +17,4 @@ var DB_CONFIG = {
 //   password  : 'SELf9xGDtL',
 //   database  : 'sql9385722'
 // }
-module.exports = DB_CONFIG;
+//#endregion

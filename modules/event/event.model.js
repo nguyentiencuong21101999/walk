@@ -18,6 +18,7 @@ event.addEvent = async (
         steps_finish,
         point
     ])
+    console.log(results);
     return results[0];
 }
 event.uploadImage = async (
@@ -26,8 +27,12 @@ event.uploadImage = async (
     const results = await procedure.sproc("upload_image", [event_id, image]);
     return results[0];
 }
-event.allEvent = async() => {
-    const results = await procedure.sproc("all_event", []);
+event.allEvent = async(limit,offset) => {
+    const values =[
+        limit,
+        offset
+    ]
+    const results = await procedure.sproc("all_event", values);
     return results[0];
 }
 event.joinEvent = async(user_id,event_id) =>{

@@ -1,6 +1,5 @@
 const { ErrorHandler } = require('../../helpers/error_handle/error_handle');
 const { successResponse, messageSuccessResponse } = require('../../helpers/response_handle/response_handle');
-const activity = require('./activity.model');
 const activityModel = require('./activity.model')
 const { statusActivity } = require('../../helpers/error_handle/status_code');
 
@@ -8,8 +7,17 @@ module.exports.addActivity = async (req, res, next) => {
     const user_id = req.user.id;
     const { steps_number, time_begin, time_end } = req.body;
     try {
-        await activityModel.addActivity(steps_number, time_begin, time_end, user_id);
-        res.json(new messageSuccessResponse(statusActivity.AddActivitySuccess))
+        await activityModel.addActivity(
+            steps_number,
+            time_begin,
+            time_end,
+            user_id
+        );
+        res.json(
+            new messageSuccessResponse(
+                statusActivity.AddActivitySuccess
+            )
+        )
     } catch (err) {
         next(err)
     }
@@ -28,7 +36,7 @@ module.exports.getActivity = async (req, res, next) => {
                 temp.push(element[0])
             }
             res.json(new successResponse(temp))
-        }else{
+        } else {
             res.json(new ErrorHandler(statusActivity.ErrorGetActivity))
         }
     } catch (err) {
@@ -41,7 +49,6 @@ module.exports.getActivity = async (req, res, next) => {
 
 module.exports.getActivityByEvent = async (req, res, next) => {
     const user_id = req.user.id;
-    console.log(user_id);
     const event_id = req.params.event_id;
     try {
         const results = await activityModel.getActivityByEvent(user_id, event_id)

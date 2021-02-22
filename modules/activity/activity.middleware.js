@@ -16,7 +16,6 @@ const validateAdd = (req, res, next) => {
     }
 }
 const validateGetActivity = (req, res, next) => {
-    console.log(req.query);
     try {
         const schemaQuery = joi.object({
             type: joi.string().required()

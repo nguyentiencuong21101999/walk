@@ -6,7 +6,7 @@
         "port": {"ENV": "MYSQL_PORT"},
         "database": {"ENV": "DB_DATABASE"},
         "user": {"ENV": "DB_USER"},
-        "password": {"ENV": "MYSQL_PASSWORD"},
+        "password": {"ENV": "PASSWORD"},
         "multipleStatements": true
     },
     "sql-file": true

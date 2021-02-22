@@ -1,6 +1,6 @@
 const { required } = require('joi');
 const { statusEvent } = require('../../helpers/error_handle/status_code');
-const { successResponse, messageSuccessResponse } = require('../../helpers/response_handle/response_handle');
+const { successResponse, messageSuccessResponse, pagination } = require('../../helpers/response_handle/response_handle');
 const { upload_single } = require('../../multer/multer');
 const eventModel = require('./event.model');
 
@@ -25,7 +25,9 @@ module.exports.joinEvent = async (req, res, next) => {
     const { event_id } = req.params;
     try {
         const results = await eventModel.joinEvent(user_id, event_id)
-        if (results) res.json(new messageSuccessResponse(statusEvent.Joined))
+        if (results) {
+            res.json(new messageSuccessResponse(statusEvent.Joined))
+        }
     } catch (err) {
         next(err)
     }
@@ -40,14 +42,17 @@ module.exports.EventById = async (req, res, next) => {
     }
 }
 module.exports.allEvent = async (req, res, next) => {
+    let { page, limit } = req.query;
+    if(page <  1)  page = 1;
+    const offset = (page - 1) * limit;
     try {
-        const results = await eventModel.allEvent();
-        res.json(new successResponse(results))
+        const results = await eventModel.allEvent(limit,offset);
+        res.json(new pagination(results,page,limit))
     } catch (err) {
         next(err)
     }
 }
-module.exports.eventJoined =async (req,res,next) =>{
+module.exports.eventJoined = async (req, res, next) => {
     const user_id = req.user.id;
     try {
         const results = await eventModel.eventJoined(user_id);
