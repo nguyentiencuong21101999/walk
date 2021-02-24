@@ -8,7 +8,6 @@ const generator = require('../auth_jwt/authJwt.middleware');
 const { ErrorHandler } = require('../../helpers/error_handle/error_handle')
 const { upload_single } = require('../../multer/multer');
 const { statusUser } = require('../../helpers/error_handle/status_code');
-const user = require('./user.model');
 
 
 
@@ -28,7 +27,7 @@ module.exports.getUserByEmail = async (req, res, next) => {
 module.exports.signin = async (req, res, next) => {
     const { email, password } = req.body;
     try {
-        const results = await userModel.getProfile(email);
+         const results = await userModel.getProfile(email);
         const users = results[0]
         const info = results[1]
         const compare = await bcrypt.comparePassword(password, users[0].password)

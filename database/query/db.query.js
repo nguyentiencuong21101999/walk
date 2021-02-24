@@ -1,6 +1,5 @@
 
-const { ErrorHandler } = require('../../helpers/error_handle/error_handle');
-const { param } = require('../../modules/user/user.router');
+
 const connection = require('../connection/db.connection')
 const querySql = (strQuery, callback) => {
     return connection.query(strQuery, callback);

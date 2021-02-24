@@ -14,16 +14,16 @@ app.use(cookieParser())
 app.use(express.static("public"));
 //PORT
 const PORT = process.env.PORT;
-var multer = require('multer');
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json())
 
 require('./database/connection/db.connection')
 //Queue
-// const {bar,barEntrance} = require('./queue')
-const {Queue,setQueues,BullAdapter} = require('./queue')
-
-
+const {setQueue,BullAdapter,
+  createQueue,
+  processQueue
+} = require('./helpers/queue/queue')
 
 const { handleError } = require('./helpers/error_handle/error_handle')
 
@@ -33,7 +33,7 @@ const activityRouter = require("./modules/activity/activity.router")
 const rankRouter = require("./modules/rank/rank.router");
 const roleRouter = require("./modules/role/role.router");
 const { router } = require('bull-board');
-const { Interface } = require('readline');
+
 
 app.use('/user', userRouter);
 app.use('/event', eventRouter)
@@ -45,9 +45,14 @@ app.use((err, req, res, next) => {
   console.log(err);
   handleError(err, res);
 });
-
+setQueue("add_activity_event");
 app.use('/admin/queues', router)
-
+let arr = []
+const data  ={ activity_id: 321, event_id: 39 };
+ Object.entries(data).map(([key,value]) =>{
+   arr.push(value)
+ })
+ console.log(arr);
 server.listen(PORT, function () {
   console.log(' App listening on port ' + PORT + "...");
 });

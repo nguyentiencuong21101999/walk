@@ -1,6 +1,5 @@
-const { statusUser } = require('../../helpers/error_handle/status_code')
+
 const procedure = require('../../database/query/db.query');
-const { ErrorHandler } = require('../../helpers/error_handle/error_handle');
 const user = {};
 user.getInfoById = (id) => {
    return procedure.sproc("get_info_by_id", [id]);
@@ -9,6 +8,8 @@ user.getProfile = async (
    email
 ) => {
    const results = await procedure.sproc("get_profile", [email])
+   console.log(results);
+   console.log(results);
    if (results.length > 0) {
       return results;
    }

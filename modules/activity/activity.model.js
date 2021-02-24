@@ -1,6 +1,6 @@
 
 const Queue = require('bull')
-const { setQueues, BullAdapter } = require('../../queue')
+const { setQueues, BullAdapter,addElementToQueue,processQueue } = require('../../helpers/queue/queue')
 const procedure = require('../../database/query/db.query');
 const activity = {};
 // add activity
@@ -17,7 +17,7 @@ activity.addActivity = async (
     ]
     const results = await procedure.sproc("add_activity", values);
     let activity_id = results[1];
-    console.log(activity_id[0]);
+
     if (results[0].length > 0) {
         results[0].map(async element => {
             if (
@@ -25,27 +25,29 @@ activity.addActivity = async (
                 new Date(time_begin) > new Date(element.time_begin) &&
                 new Date(time_end) < new Date(element.time_end)
             ) {
-                const someQueue = new Queue("add_activity_event")
-
-                const obj = {
-                    activity_id: activity_id[0].activity_id,
-                    event_id: element.event_id
+                 const obj = {
+                    event_id: element.event_id,
+                    activity_id: activity_id[0].activity_id
+                    
                 }
-                const jobOpts = {
-                    delay: 5000
-                }
-                someQueue.add(obj, jobOpts)
+                addElementToQueue("add_activity_event",obj)
+                
+                //#region 
+                // const someQueue = new Queue("add_activity_event")
+                // someQueue.add(obj, {delay:5000})
 
-                someQueue.process(async (job, jobDone) => {
-                    const { event_id, activity_id } = job.data
-                    await procedure.sproc("add_activity_event", [event_id, activity_id])
-                    job.progress(100)
-                    jobDone()
-                })
-                setQueues([
-                    new BullAdapter(someQueue, { readOnlyMode: true }), // only this queue will be in read only mode
-                ]);
+                // someQueue.process(async (job, jobDone) => {
+                //     const { event_id, activity_id } = job.data
+                //     await procedure.sproc("add_activity_event", [event_id, activity_id])
+                //     job.progress(100)
+                //     jobDone()
+                // })
+                // setQueues([
+                //     new BullAdapter(someQueue, { readOnlyMode: true }), // only this queue will be in read only mode
+                // ]);
+                //#endregion
             }
+          
             //#region 
             // if( new Date(time_begin) > element.time_join  && new Date(time_begin) > element.time_begin && new Date(time_end) < element.time_end){
             //     await procedure.sproc("add_activity_event",[element.event_id,activity_id[0].activity_id])
@@ -53,7 +55,7 @@ activity.addActivity = async (
             //#endregion
         })
     }
-
+    processQueue("add_activity_event","add_activity_event")
 }
 // get steps day by user_id
 activity.getAcitivity = async (
