@@ -122,10 +122,13 @@ BEGIN
 
 END;
 
-CREATE PROCEDURE `all_event`()
+CREATE PROCEDURE `all_event`(in limits int,in offsets int)
 BEGIN
 	#Routine body goes here...
-	SELECT * FROM `event`;
+	SELECT * FROM `event`
+	LIMIT limits
+	OFFSET offsets;
+	
 
 END;
 
@@ -245,15 +248,16 @@ SP: BEGIN
 END SP;
 
 CREATE PROCEDURE `get_activity_by_event`(IN user_ids INT, IN event_ids INT)
-BEGIN
+SP:BEGIN
 	#Routine body goes here...
-		DECLARE
-	EXIT HANDLER FOR SQLEXCEPTION BEGIN
-			ROLLBACK;
-		RESIGNAL;
-		
-	END;
-	START TRANSACTION;
+	DECLARE
+		SPError CONDITION FOR SQLSTATE '45000';
+		if EXISTS (SELECT user_event.user_id
+	FROM
+		user_event
+		INNER JOIN `event` ON user_event.event_id = `event`.event_id 
+	WHERE
+		user_event.user_id = user_ids and user_event.event_id = event_ids) THEN
 	SELECT
 		`event`.event_id,
 		steps_finish,
@@ -269,9 +273,12 @@ BEGIN
 		AND activity.user_id = user_ids 
 	GROUP BY
 		`event`.event_id;
-	COMMIT;
+		else
+		 SIGNAL SPError 
+		SET message_text = "IsNotJoinEvent";
+	END IF;
 
-END;
+END SP;
 
 CREATE PROCEDURE `get_address_by_id`(IN id INT)
 BEGIN#Routine body goes here...
@@ -328,7 +335,15 @@ SP : BEGIN#Routine body goes here...
 END SP;
 
 CREATE PROCEDURE `get_event_joined`(IN user_ids INT)
-BEGIN#Routine body goes here...
+SP:BEGIN#Routine body goes here...
+	DECLARE
+		SPError CONDITION FOR SQLSTATE '45000';
+		if EXISTS (SELECT user_event.user_id
+	FROM
+		user_event
+		INNER JOIN `event` ON user_event.event_id = `event`.event_id 
+	WHERE
+		user_event.user_id = user_ids)  THEN
 	SELECT
 		`event`.event_id,
 		name,
@@ -344,7 +359,11 @@ BEGIN#Routine body goes here...
 		INNER JOIN `event` ON user_event.event_id = `event`.event_id 
 	WHERE
 		user_event.user_id = user_ids;
-END;
+		else
+		 SIGNAL SPError 
+		SET message_text = "IsNotJoinEvent";
+	END IF;
+END SP;
 
 CREATE PROCEDURE `get_profile`(IN emails VARCHAR ( 255 ))
 SP : BEGIN#Routine body goes here...
@@ -440,24 +459,34 @@ SP: BEGIN
 
 END SP;
 
-CREATE PROCEDURE `get_rank_by_event`(in event_ids int,in limits int,in offsets int)
-BEGIN
-	SELECT `event`.event_id,steps_finish,
-	COALESCE(SUM(steps_number),0) as total_steps,
-	lastname ,
-		ROW_NUMBER() OVER(ORDER BY SUM(steps_number) DESC ) AS `rank`
-	
-	from event_activity 
-	INNER JOIN `event` on `event`.event_id = event_activity.event_id
-	INNER JOIN activity on activity.activity_id = event_activity.activity_id
-	INNER JOIN user_info on user_info.user_id = activity.user_id
-	WHERE `event`.event_id = event_ids
-	GROUP BY user_info.user_id
-	LIMIT limits
-	OFFSET offsets;
--- 	ORDER BY total_steps  DESC ;
+CREATE PROCEDURE `get_rank_by_event`(IN event_ids INT, IN limits INT, IN offsets INT)
+SP : BEGIN
+	DECLARE
+		SPError CONDITION FOR SQLSTATE '45000';
+	IF
+		EXISTS ( SELECT event_id from `event` WHERE event_id = event_ids ) THEN
+		SELECT
+			`event`.event_id,
+			steps_finish,
+			COALESCE ( SUM( steps_number ), 0 ) AS total_steps,
+			lastname,
+			ROW_NUMBER () OVER ( ORDER BY SUM( steps_number ) DESC ) AS `rank` 
+		FROM
+			event_activity
+			INNER JOIN `event` ON `event`.event_id = event_activity.event_id
+			INNER JOIN activity ON activity.activity_id = event_activity.activity_id
+			INNER JOIN user_info ON user_info.user_id = activity.user_id 
+		WHERE
+			`event`.event_id = event_ids 
+		GROUP BY
+			user_info.user_id 
+			LIMIT limits OFFSET offsets;-- 	ORDER BY total_steps  DESC ;
+		ELSE SIGNAL SPError 
+		SET message_text = "EventIsNotValid";
+		
+	END IF;
 
-END;
+END SP;
 
 CREATE PROCEDURE `get_steps_by_month`(IN user_ids int)
 BEGIN

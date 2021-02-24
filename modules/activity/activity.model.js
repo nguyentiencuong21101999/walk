@@ -8,8 +8,7 @@ activity.addActivity = async (
     steps_number,
     time_begin,
     time_end,
-    user_id
-) => {
+    user_id) => {
     const values = [
         steps_number,
         time_begin,
@@ -33,9 +32,9 @@ activity.addActivity = async (
                     event_id: element.event_id
                 }
                 const jobOpts = {
-                    delay:5000
+                    delay: 5000
                 }
-                someQueue.add(obj,jobOpts)
+                someQueue.add(obj, jobOpts)
 
                 someQueue.process(async (job, jobDone) => {
                     const { event_id, activity_id } = job.data
@@ -57,16 +56,28 @@ activity.addActivity = async (
 
 }
 // get steps day by user_id
-activity.getAcitivity = async (user_id, type) => {
-    const results = await procedure.sproc("get_activity", [user_id, type]);
+activity.getAcitivity = async (
+    user_id,
+    type) => {
+    const values = [
+        user_id,
+        type
+    ]
+    const results = await procedure.sproc("get_activity", values);
     if (results[0].length > 0) {
         return results
     }
 }
 
 // get steps  event by user_id  and event id
-activity.getActivityByEvent = async (user_id, event_id) => {
-    const results = await procedure.sproc("get_activity_by_event", [user_id, event_id]);
+activity.getActivityByEvent = async (
+    user_id,
+    event_id) => {
+    const values = [
+        user_id,
+        event_id
+    ]
+    const results = await procedure.sproc("get_activity_by_event", values);
     if (results[0].length > 0) {
         return results[0]
     }

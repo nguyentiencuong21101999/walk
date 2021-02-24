@@ -101,6 +101,11 @@ const statusErrorMysql = {
         code:403,
         message:"Event is not valid!"
     },
+    IsNotJoinEvent:{
+        code:403,
+        message:"User is not join Event!"
+    }
+    ,
     //activity
     TypeIsNotValid:{
         code:403,

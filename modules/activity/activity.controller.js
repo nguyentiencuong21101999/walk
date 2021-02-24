@@ -52,9 +52,9 @@ module.exports.getActivityByEvent = async (req, res, next) => {
     const event_id = req.params.event_id;
     try {
         const results = await activityModel.getActivityByEvent(user_id, event_id)
-
-        if (!results) res.json(new ErrorHandler(statusActivity.ErrorGetJoined))
-        else res.json(new successResponse(results))
+        if (!results) res.json(new ErrorHandler(statusActivity.ErrorGetActivity))
+        else 
+        res.json(new successResponse(results))
     } catch (err) {
         next(err)
     }

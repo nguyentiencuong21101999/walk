@@ -9,21 +9,20 @@ rank.getRank = async (
         limit,
         offset
     ]
-    
-    const results = await procedure.sproc('get_rank',values)
+    const results = await procedure.sproc('get_rank', values)
     return results[0]
 }
 
-rank.getRankByEvent = async(
+rank.getRankByEvent = async (
     event_id,
     limit,
     offset) => {
-        const values = [
-            event_id,
-            limit,
-            offset
-        ]
-    const results = await procedure.sproc('get_rank_by_event',values);
+    const values = [
+        event_id,
+        limit,
+        offset
+    ]
+    const results = await procedure.sproc('get_rank_by_event', values);
     return results[0]
 }
 module.exports = rank;

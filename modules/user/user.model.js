@@ -25,7 +25,20 @@ user.insertUser = async (
    address_name,
    ward, district,
    province) => {
-   const results = await procedure.sproc("insert_user", [email, password, firstname, lastname, birthday, gender, phone, address_name, ward, district, province]);
+   const values = [
+      email,
+      password,
+      firstname,
+      lastname,
+      birthday,
+      gender,
+      phone,
+      address_name,
+      ward,
+      district,
+      province
+   ]
+   const results = await procedure.sproc("insert_user", values);
    if (results.length > 0) {
       return results;
    }
@@ -33,7 +46,11 @@ user.insertUser = async (
 user.uploadAvatar = async (
    user_id,
    image) => {
-   const results = await procedure.sproc("upload_avatar", [user_id, image])
+   const values = [
+      user_id,
+      image
+   ]
+   const results = await procedure.sproc("upload_avatar", values)
    return results;
 
 }
