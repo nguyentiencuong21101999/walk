@@ -47,12 +47,7 @@ app.use((err, req, res, next) => {
 });
 setQueue("add_activity_event");
 app.use('/admin/queues', router)
-let arr = []
-const data  ={ activity_id: 321, event_id: 39 };
- Object.entries(data).map(([key,value]) =>{
-   arr.push(value)
- })
- console.log(arr);
+console.log(process.env.DELAY);
 server.listen(PORT, function () {
   console.log(' App listening on port ' + PORT + "...");
 });

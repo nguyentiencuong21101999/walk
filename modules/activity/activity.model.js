@@ -31,7 +31,6 @@ activity.addActivity = async (
                     
                 }
                 addElementToQueue("add_activity_event",obj)
-                
                 //#region 
                 // const someQueue = new Queue("add_activity_event")
                 // someQueue.add(obj, {delay:5000})
@@ -47,7 +46,6 @@ activity.addActivity = async (
                 // ]);
                 //#endregion
             }
-          
             //#region 
             // if( new Date(time_begin) > element.time_join  && new Date(time_begin) > element.time_begin && new Date(time_end) < element.time_end){
             //     await procedure.sproc("add_activity_event",[element.event_id,activity_id[0].activity_id])

@@ -13,10 +13,9 @@ module.exports.addActivity = async (req, res, next) => {
             time_end,
             user_id
         );
-        res.json(
-            new messageSuccessResponse(
-                statusActivity.AddActivitySuccess
-            )
+        res.json( new messageSuccessResponse(
+            statusActivity.AddActivitySuccess
+        )
         )
     } catch (err) {
         next(err)
@@ -53,8 +52,8 @@ module.exports.getActivityByEvent = async (req, res, next) => {
     try {
         const results = await activityModel.getActivityByEvent(user_id, event_id)
         if (!results) res.json(new ErrorHandler(statusActivity.ErrorGetActivity))
-        else 
-        res.json(new successResponse(results))
+        else
+            res.json(new successResponse(results))
     } catch (err) {
         next(err)
     }

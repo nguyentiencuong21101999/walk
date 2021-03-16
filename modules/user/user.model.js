@@ -58,6 +58,7 @@ user.uploadAvatar = async (
 //End Join
 user.getAllEventJoined = (user_id) => {
    return procedure.sproc("get_all_event_joined", [user_id]);
+   
 }
 
 module.exports = user;
