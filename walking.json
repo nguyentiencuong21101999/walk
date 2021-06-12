@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "e7b99b97-1c8e-4872-a540-c26e8f72cc67",
 		"name": "task",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
@@ -31,18 +31,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:4000/user/signin",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"user",
-								"signin"
-							]
-						}
+						"url": "http://localhost:4000/user/signin"
 					},
 					"response": []
 				},
@@ -60,18 +49,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:4000/user/signup",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"user",
-								"signup"
-							]
-						}
+						"url": "http://localhost:4000/user/signup"
 					},
 					"response": []
 				},
@@ -89,18 +67,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:4000/user/signout",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"user",
-								"signout"
-							]
-						}
+						"url": "http://localhost:4000/user/signout"
 					},
 					"response": []
 				},
@@ -137,18 +104,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:4000/user/upload-avatar",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"user",
-								"upload-avatar"
-							]
-						}
+						"url": "http://localhost:4000/user/upload-avatar"
 					},
 					"response": []
 				},
@@ -172,18 +128,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:4000/user/refreshToken",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"user",
-								"refreshToken"
-							]
-						}
+						"url": "http://localhost:4000/user/refreshToken"
 					},
 					"response": []
 				}
@@ -199,31 +144,20 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "{{accessToken}}",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE4LCJyb2xlIjoxLCJpYXQiOjE2MjM0NzE3MzcsImV4cCI6MTYyMzU1ODEzN30.T-NsuvcJZkXL1kM9djBTAFM3mhrCkLy0UlbSJ39hHnQ",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"event chay bo\",\r\n    \"detail_event\" : \"abc\",\r\n    \"time_begin\":\"2021-02-22\",\r\n    \"time_end\" : \"2021-02-28\",\r\n    \"steps_finish\":\"1000\",\r\n    \"point\":\"100\"\r\n}",
+							"raw": "{\r\n    \"name\":\"event chay bo\",\r\n    \"detail_event\" : \"abc\",\r\n    \"time_begin\":\"2021-06-12\",\r\n    \"time_end\" : \"2021-06-13\",\r\n    \"steps_finish\":\"1000\",\r\n    \"point\":\"100\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:4000/event/add",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"event",
-								"add"
-							]
-						}
+						"url": "http://localhost:4000/event/add"
 					},
 					"response": []
 				},
@@ -248,19 +182,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "http://localhost:4000/event/upload-image/30",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"event",
-								"upload-image",
-								"30"
-							]
-						}
+						"url": "http://localhost:4000/event/upload-image/30"
 					},
 					"response": []
 				},
@@ -311,19 +233,7 @@
 								"type": "text"
 							}
 						],
-						"url": {
-							"raw": "http://localhost:4000/event/join/30",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"event",
-								"join",
-								"30"
-							]
-						}
+						"url": "http://localhost:4000/event/join/30"
 					},
 					"response": []
 				},
@@ -332,18 +242,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "http://localhost:4000/event/31",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"event",
-								"31"
-							]
-						}
+						"url": "http://localhost:4000/event/31"
 					},
 					"response": []
 				},
@@ -358,18 +257,7 @@
 								"type": "text"
 							}
 						],
-						"url": {
-							"raw": "http://localhost:4000/event/joined",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"event",
-								"joined"
-							]
-						}
+						"url": "http://localhost:4000/event/joined"
 					},
 					"response": []
 				}
@@ -398,18 +286,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:4000/activity/add",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"activity",
-								"add"
-							]
-						}
+						"url": "http://localhost:4000/activity/add"
 					},
 					"response": []
 				},
@@ -420,7 +297,7 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "{{accessToken}}",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE4LCJyb2xlIjoxLCJpYXQiOjE2MjM0NzE3MzcsImV4cCI6MTYyMzU1ODEzN30.T-NsuvcJZkXL1kM9djBTAFM3mhrCkLy0UlbSJ39hHnQ",
 								"type": "text"
 							}
 						],
@@ -456,140 +333,7 @@
 								"type": "text"
 							}
 						],
-						"url": {
-							"raw": "http://localhost:4000/activity/get-activity-by-event/31",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"activity",
-								"get-activity-by-event",
-								"31"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "role",
-			"item": [
-				{
-					"name": "http://localhost:4000/role/client",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"token\" : \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjQsInJvbGUiOjIsImlhdCI6MTYwOTM4MDQ0MSwiZXhwIjoxNjA5MzgwNDcxfQ.oLoUW4MJYO1r9JH79jM4sbWGRheLsH63foxYtE6jvjA\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:4000/role/client",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"role",
-								"client"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:4000/role/admin",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"token\" : \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjQsInJvbGUiOjIsImlhdCI6MTYwOTkyNjU0OCwiZXhwIjoxNjEwMDEyOTQ4fQ.8wQN_SHkpQa-gqJme3yWYob_T1zQ8GtaxNOWGR7JIwg\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:4000/role/admin",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"role",
-								"admin"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:4000/user/upload_single",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "fileImage",
-									"type": "file",
-									"src": "/C:/Users/Tran Thu/Desktop/im-website/admin_chat.PNG"
-								},
-								{
-									"key": "fileImage",
-									"type": "file",
-									"src": "/C:/Users/Tran Thu/Desktop/im-website/admin.PNG"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:4000/user/upload_single",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"user",
-								"upload_single"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:4000/user/upload_multiple",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:4000/user/upload_multiple",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"user",
-								"upload_multiple"
-							]
-						}
+						"url": "http://localhost:4000/activity/get-activity-by-event/31"
 					},
 					"response": []
 				}
@@ -665,6 +409,83 @@
 								}
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "role",
+			"item": [
+				{
+					"name": "http://localhost:4000/role/client",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\" : \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjQsInJvbGUiOjIsImlhdCI6MTYwOTM4MDQ0MSwiZXhwIjoxNjA5MzgwNDcxfQ.oLoUW4MJYO1r9JH79jM4sbWGRheLsH63foxYtE6jvjA\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:4000/role/client"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/role/admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\" : \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjQsInJvbGUiOjIsImlhdCI6MTYwOTkyNjU0OCwiZXhwIjoxNjEwMDEyOTQ4fQ.8wQN_SHkpQa-gqJme3yWYob_T1zQ8GtaxNOWGR7JIwg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:4000/role/admin"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/user/upload_single",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "fileImage",
+									"type": "file",
+									"src": "/C:/Users/Tran Thu/Desktop/im-website/admin_chat.PNG"
+								},
+								{
+									"key": "fileImage",
+									"type": "file",
+									"src": "/C:/Users/Tran Thu/Desktop/im-website/admin.PNG"
+								}
+							]
+						},
+						"url": "http://localhost:4000/user/upload_single"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:4000/user/upload_multiple",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:4000/user/upload_multiple"
 					},
 					"response": []
 				}
