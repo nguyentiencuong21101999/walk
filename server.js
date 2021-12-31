@@ -49,6 +49,6 @@ setQueue("add_activity_event");
 app.use('/admin/queues', router)
 console.log(process.env.DELAY);
 server.listen(PORT, function () {
-  console.log(' App listening on port ' + PORT + "...");
+  console.log(' App listening on port ' + PORT + "....");
 });
 
